@@ -4,6 +4,7 @@ Hinweise für Claude Code bei der Arbeit an diesem Repo.
 
 ## Projekt
 
+Jellyos (https://github.com/Lua-x/Jellyos-jellyfin-theme):
 Custom-CSS-Theme für den Jellyfin-Web-Client (10.9+, Standard-Layout) im
 Apple-TV-/tvOS-26-Stil mit Liquid Glass. Reines CSS, kein Build-Schritt.
 Wird in Jellyfin per `@import` eingebunden.

@@ -1,4 +1,4 @@
-# Jellyfin tvOS Theme
+# Jellyos – Jellyfin-Theme im Apple-TV-Stil
 
 Ein Custom-CSS-Theme für den Jellyfin-Web-Client im Stil von Apple TV
 (tvOS 26) mit **Liquid Glass**: schwebende Glas-Kapseln mit Lichtkanten und
@@ -44,7 +44,7 @@ eine der folgenden Varianten eintragen, dann speichern und die Seite neu laden.
 ### Variante A: über jsDelivr (am einfachsten)
 
 ```css
-@import url("https://cdn.jsdelivr.net/gh/<github-user>/jellyfin-tvos-theme@v1.1.0/theme/apple-tv.css");
+@import url("https://cdn.jsdelivr.net/gh/Lua-x/Jellyos-jellyfin-theme@v1.1.0/theme/apple-tv.css");
 ```
 
 Am besten immer einen Tag (`@v1.1.0`) statt `@main` verwenden – jsDelivr
