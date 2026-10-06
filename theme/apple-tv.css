@@ -1,6 +1,6 @@
 /* ==========================================================================
    Jellyos – Apple-TV-Look mit Liquid Glass für Jellyfin
-   Version: 1.1.0
+   Version: 1.1.1
    Repo:    https://github.com/Lua-x/Jellyos-jellyfin-theme
    Ziel:    Jellyfin 10.9+ (Web-Client, Standard-Layout)
    Lizenz:  MIT
@@ -124,7 +124,6 @@
 .headerTabs .emby-tabs-slider,
 .headerButton,
 .emby-scrollbuttons-button,
-.cardOverlayButton,
 .mainDetailButtons .detailButton,
 .videoOsdBottom .osdControls {
     background: var(--lg-sheen), var(--lg-tint) !important;
@@ -499,11 +498,13 @@ a,
     outline: none;
 }
 
-/* Overlay mit Play-/Mehr-Buttons */
+/* Hover-Overlay (Jellyfin: .cardOverlayContainer mit Play-Button in der
+   Mitte und Buttons unten rechts). Alle Größen in em – skaliert mit der
+   Schriftgröße und damit mit jeder Auflösung. */
 .cardOverlayContainer {
     background: linear-gradient(to top,
-                rgba(0, 0, 0, 0.55) 0%,
-                rgba(0, 0, 0, 0) 55%) !important;
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0) 45%) !important;
 }
 
 .cardOverlayButton {
@@ -511,23 +512,61 @@ a,
     color: #ffffff !important;
 }
 
-.cardOverlayButton:hover {
+/* Play in der Mitte: weiße Kapsel, unabhängig von der Posterfarbe */
+.cardOverlayContainer > .cardOverlayFab-primary {
+    width: 2.6em !important;
+    height: 2.6em !important;
+    margin: -1.3em 0 0 -1.3em !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.82)) !important;
+    color: var(--tv-on-primary) !important;
+    box-shadow:
+        inset 1px 1px 0 #ffffff,
+        0 6px 20px rgba(0, 0, 0, 0.35) !important;
+    transition: transform 0.5s var(--tv-spring), opacity 0.2s ease !important;
+}
+
+.cardOverlayContainer > .cardOverlayFab-primary:hover {
+    background: #ffffff !important;
+    transform: scale(1.1) !important;
+}
+
+.cardOverlayFab-primary .cardOverlayButtonIcon {
+    color: var(--tv-on-primary) !important;
+    font-size: 1.4em !important;
+}
+
+/* Buttons unten rechts: kompakte Glas-Kreise mit Abstand zum Rand */
+.cardOverlayButton-br {
+    bottom: 0.5em !important;
+    inset-inline-end: 0.5em !important;
+    gap: 0.3em;
+}
+
+.cardOverlayButton-br .cardOverlayButton {
+    padding: 0.35em !important;
+    background: var(--lg-sheen), var(--lg-tint) !important;
+    -webkit-backdrop-filter: var(--lg-filter);
+    backdrop-filter: var(--lg-filter);
+    box-shadow: var(--lg-rim) !important;
+}
+
+.cardOverlayButton-br .cardOverlayButton:hover {
     background: var(--lg-sheen), rgba(255, 255, 255, 0.24) !important;
 }
 
-/* Text unter den Karten – linksbündig wie bei tvOS */
-.cardFooter,
-.cardText {
-    text-align: left;
+.cardOverlayButton-br .cardOverlayButtonIcon {
+    font-size: 1.15em !important;
 }
 
+/* Text unter den Karten */
 .cardText {
     color: var(--tv-text-2);
     font-size: 0.85em;
 }
 
-.cardText-first {
-    color: var(--tv-text);
+.cardText-first,
+.cardText-first .textActionButton {
+    color: var(--tv-text) !important;
     font-weight: 600;
 }
 

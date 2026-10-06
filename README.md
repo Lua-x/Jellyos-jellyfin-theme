@@ -44,10 +44,10 @@ eine der folgenden Varianten eintragen, dann speichern und die Seite neu laden.
 ### Variante A: über jsDelivr (am einfachsten)
 
 ```css
-@import url("https://cdn.jsdelivr.net/gh/Lua-x/Jellyos-jellyfin-theme@v1.1.0/theme/apple-tv.css");
+@import url("https://cdn.jsdelivr.net/gh/Lua-x/Jellyos-jellyfin-theme@1.1.1/theme/apple-tv.css");
 ```
 
-Am besten immer einen Tag (`@v1.1.0`) statt `@main` verwenden – jsDelivr
+Am besten immer einen Tag (`@1.1.1`) statt `@main` verwenden – jsDelivr
 hält `@main` eine Weile im Cache, Änderungen kommen dann verzögert an.
 
 ### Variante B: selbst gehostet (ohne Drittanbieter)
