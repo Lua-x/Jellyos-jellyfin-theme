@@ -1,0 +1,749 @@
+/* ==========================================================================
+   Jellyfin tvOS Theme – Apple-TV-Look für den Jellyfin-Web-Client
+   Version: 1.0.0
+   Ziel:    Jellyfin 10.9+ (Web-Client)
+   Lizenz:  MIT
+
+   Einbinden: Dashboard → Allgemein → „Benutzerdefinierter CSS-Code“
+              @import url("<URL zu dieser Datei>");
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Schrift
+   Inter liegt im Repo (fonts/), wird relativ zu dieser Datei geladen –
+   kein Google Fonts, keine Drittanbieter-Requests außer dem eigenen Host.
+   Auf Apple-Geräten wird automatisch die Systemschrift (SF Pro) verwendet.
+   -------------------------------------------------------------------------- */
+@font-face {
+    font-family: "InterTV";
+    src: url("../fonts/inter-latin-wght-normal.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Variablen – hier lässt sich das Theme anpassen
+   -------------------------------------------------------------------------- */
+:root {
+    /* Farben */
+    --tv-bg: #000000;                         /* Seitenhintergrund */
+    --tv-surface: #1c1c1e;                    /* Karten-Platzhalter */
+    --tv-fill: rgba(118, 118, 128, 0.24);     /* Eingabefelder, Flächen */
+    --tv-fill-hover: rgba(118, 118, 128, 0.36);
+    --tv-glass: rgba(44, 44, 48, 0.55);       /* „Glas“-Elemente */
+    --tv-glass-strong: rgba(28, 28, 30, 0.82);
+    --tv-glass-border: rgba(255, 255, 255, 0.12);
+    --tv-text: #f5f5f7;                       /* Primärtext */
+    --tv-text-2: rgba(235, 235, 245, 0.62);   /* Sekundärtext */
+    --tv-text-3: rgba(235, 235, 245, 0.32);   /* Tertiärtext */
+    --tv-primary: #ffffff;                    /* Primär-Button (weiß) */
+    --tv-on-primary: #000000;
+    --tv-tint: #0a84ff;                       /* Akzent (Apple systemBlue) */
+
+    /* Formen */
+    --tv-radius-card: 14px;
+    --tv-radius-control: 12px;
+    --tv-radius-dialog: 22px;
+    --tv-radius-pill: 999px;
+
+    /* Effekte */
+    --tv-blur: blur(30px) saturate(180%);
+    --tv-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+    --tv-shadow-focus: 0 28px 60px rgba(0, 0, 0, 0.75);
+    --tv-focus-scale: 1.08;
+    --tv-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --tv-duration: 0.35s;
+
+    /* Schrift */
+    --tv-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "InterTV",
+               "Segoe UI", system-ui, sans-serif;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. Grundlayout
+   -------------------------------------------------------------------------- */
+html,
+body,
+.skinBody,
+.backgroundContainer {
+    background-color: var(--tv-bg) !important;
+}
+
+/* Halbtransparenter Hintergrund, wenn Backdrops aktiviert sind */
+.backgroundContainer.withBackdrop {
+    background-color: rgba(0, 0, 0, 0.78) !important;
+}
+
+body,
+button,
+input,
+select,
+textarea,
+h1, h2, h3, h4,
+.emby-button,
+.emby-tab-button {
+    font-family: var(--tv-font) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    color: var(--tv-text);
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+}
+
+a,
+.button-link {
+    color: var(--tv-tint);
+}
+
+::selection {
+    background: rgba(10, 132, 255, 0.45);
+}
+
+/* Schlanke Scrollbars */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: var(--tv-radius-pill);
+}
+
+
+/* --------------------------------------------------------------------------
+   4. Kopfzeile & Tab-Leiste (zentrierte Glas-Pille wie in tvOS)
+   -------------------------------------------------------------------------- */
+.skinHeader {
+    background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.72) 0%,
+                rgba(0, 0, 0, 0.35) 60%,
+                rgba(0, 0, 0, 0) 100%) !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.pageTitle {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.headerButton,
+.paper-icon-button-light {
+    border-radius: var(--tv-radius-pill);
+    transition: background-color 0.2s ease, transform 0.2s var(--tv-ease);
+}
+
+.headerButton:hover,
+.paper-icon-button-light:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Tab-Leiste zentrieren */
+.headerTabs {
+    display: flex;
+    justify-content: center;
+}
+
+.headerTabs .emby-tabs-slider {
+    display: inline-flex;
+    gap: 2px;
+    padding: 4px;
+    margin: 0.4em auto;
+    background: var(--tv-glass);
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    border: 1px solid var(--tv-glass-border);
+    border-radius: var(--tv-radius-pill);
+}
+
+.emby-tab-button {
+    padding: 0.55em 1.3em !important;
+    border-radius: var(--tv-radius-pill);
+    color: var(--tv-text-2) !important;
+    font-weight: 600;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.emby-tab-button:hover {
+    color: var(--tv-text) !important;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.emby-tab-button-active,
+.emby-tab-button-active:hover,
+.emby-tab-button.emby-button-focus {
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    color: #000000 !important;
+}
+
+/* Unterstrich-Indikator von Jellyfin ausblenden */
+.emby-tab-button::after,
+.emby-tab-button-active::after {
+    display: none !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. Seitenmenü (Drawer)
+   -------------------------------------------------------------------------- */
+.mainDrawer {
+    background: var(--tv-glass-strong) !important;
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    border-right: 1px solid var(--tv-glass-border);
+}
+
+.navMenuOption {
+    margin: 2px 10px;
+    border-radius: var(--tv-radius-control);
+    transition: background-color 0.2s ease;
+}
+
+.navMenuOption:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.navMenuOption-selected,
+.navMenuOption-selected:hover {
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    color: #000000 !important;
+}
+
+.navMenuOption-selected .navMenuOptionIcon {
+    color: #000000 !important;
+}
+
+.sidebarHeader {
+    color: var(--tv-text-3);
+    font-weight: 600;
+    text-transform: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. Abschnittstitel & Reihen
+   -------------------------------------------------------------------------- */
+.sectionTitle,
+.sectionTitle-cards {
+    font-size: 1.35em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--tv-text);
+}
+
+.sectionTitleTextButton .material-icons {
+    color: var(--tv-text-3);
+}
+
+/* Etwas mehr Luft zwischen den Reihen */
+.verticalSection {
+    margin-bottom: 1.2em;
+}
+
+/* Scroll-Pfeile als Glas-Kreise */
+.emby-scrollbuttons-button {
+    background: var(--tv-glass) !important;
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    border: 1px solid var(--tv-glass-border);
+    border-radius: var(--tv-radius-pill);
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Karten (Poster, Thumbs, Episoden)
+   Fokus-Effekt: anheben, vergrößern, Lichtreflex – wie auf dem Apple TV
+   -------------------------------------------------------------------------- */
+.cardBox {
+    transition: transform var(--tv-duration) var(--tv-ease);
+}
+
+.cardScalable,
+.cardImageContainer,
+.cardContent,
+.cardOverlayContainer,
+.cardImage,
+.cardPadder {
+    border-radius: var(--tv-radius-card) !important;
+}
+
+.cardScalable {
+    overflow: hidden;
+    background-color: var(--tv-surface);
+    box-shadow: var(--tv-shadow);
+    transition: transform var(--tv-duration) var(--tv-ease),
+                box-shadow var(--tv-duration) var(--tv-ease);
+}
+
+/* Lichtreflex, der bei Fokus/Hover sichtbar wird */
+.cardScalable::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.22) 0%,
+                rgba(255, 255, 255, 0.04) 40%,
+                rgba(255, 255, 255, 0) 60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--tv-duration) var(--tv-ease);
+}
+
+.card:hover .cardScalable,
+.card:focus .cardScalable,
+.card:focus-within .cardScalable {
+    transform: scale(var(--tv-focus-scale)) translateY(-4px);
+    box-shadow: var(--tv-shadow-focus);
+}
+
+.card:hover .cardScalable::after,
+.card:focus .cardScalable::after,
+.card:focus-within .cardScalable::after {
+    opacity: 1;
+}
+
+/* Jellyfins eigene Fokus-Vergrößerung und Rahmen (TV-Layout) neutralisieren */
+.card:focus .cardBox.cardBox-focustransform {
+    transform: none !important;
+}
+
+.card-focuscontent,
+.card:focus .card-focuscontent {
+    border-color: transparent !important;
+}
+
+.card:focus {
+    outline: none;
+}
+
+/* Overlay mit Play-/Mehr-Buttons */
+.cardOverlayContainer {
+    background: linear-gradient(to top,
+                rgba(0, 0, 0, 0.65) 0%,
+                rgba(0, 0, 0, 0) 60%) !important;
+}
+
+.cardOverlayButton {
+    background: var(--tv-glass) !important;
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    border-radius: var(--tv-radius-pill) !important;
+}
+
+/* Text unter den Karten */
+.cardText {
+    color: var(--tv-text-2);
+    font-size: 0.85em;
+}
+
+.cardText-first {
+    color: var(--tv-text);
+    font-weight: 600;
+}
+
+.cardFooter {
+    padding-top: 0.6em;
+}
+
+/* Fortschrittsbalken */
+.itemProgressBar {
+    height: 4px !important;
+    margin: 0 10px 9px;
+    border-radius: var(--tv-radius-pill);
+    background: rgba(255, 255, 255, 0.28) !important;
+    overflow: hidden;
+}
+
+.itemProgressBarForeground {
+    background-color: #ffffff !important;
+    border-radius: var(--tv-radius-pill);
+}
+
+/* „Gesehen“-Haken und Zähler */
+.playedIndicator,
+.countIndicator {
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #000000 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.playedIndicator .material-icons,
+.countIndicator .material-icons {
+    color: #000000 !important;
+}
+
+/* Kartenhintergrund ohne Bild (Platzhalter) */
+.defaultCardBackground {
+    background: linear-gradient(160deg, #2c2c2e, #1c1c1e) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Detailseite (Film / Serie)
+   Großes Backdrop, weicher Verlauf ins Schwarz, Pill-Buttons
+   -------------------------------------------------------------------------- */
+.layout-desktop .itemBackdrop,
+.layout-tv .itemBackdrop {
+    height: 62vh !important;
+}
+
+.itemBackdrop {
+    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+}
+
+/* Dunkles Band unter dem Backdrop entfernen */
+.detailRibbon,
+.detailPagePrimaryContainer {
+    background: transparent !important;
+}
+
+.itemName,
+.parentNameLast {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.itemMiscInfo,
+.itemMiscInfo-primary,
+.itemMiscInfo-secondary {
+    color: var(--tv-text-2);
+}
+
+.overview {
+    color: var(--tv-text-2);
+    line-height: 1.5;
+}
+
+/* Runde Glas-Buttons */
+.mainDetailButtons .detailButton {
+    background: var(--tv-glass) !important;
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    border: 1px solid var(--tv-glass-border);
+    border-radius: var(--tv-radius-pill) !important;
+    transition: transform 0.25s var(--tv-ease), background-color 0.25s ease;
+}
+
+.mainDetailButtons .detailButton:hover,
+.mainDetailButtons .detailButton:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: scale(1.06);
+}
+
+/* Abspielen/Fortsetzen: weiße Pille */
+.mainDetailButtons .btnPlay,
+.mainDetailButtons .btnResume,
+.mainDetailButtons .btnReplay {
+    background: var(--tv-primary) !important;
+    color: var(--tv-on-primary) !important;
+    border-color: transparent;
+}
+
+.mainDetailButtons .btnPlay:hover,
+.mainDetailButtons .btnResume:hover,
+.mainDetailButtons .btnReplay:hover {
+    background: #e5e5ea !important;
+}
+
+.mainDetailButtons .btnPlay .material-icons,
+.mainDetailButtons .btnResume .material-icons,
+.mainDetailButtons .btnReplay .material-icons {
+    color: var(--tv-on-primary) !important;
+}
+
+/* Genre-/Studio-Links */
+.itemDetailsGroup .textValue a,
+.itemGenres a {
+    color: var(--tv-text);
+}
+
+/* Besetzung: runde Porträts */
+#castContent .cardScalable,
+.peopleSection .cardScalable {
+    border-radius: 50% !important;
+}
+
+#castContent .cardImageContainer,
+.peopleSection .cardImageContainer {
+    border-radius: 50% !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. Buttons
+   -------------------------------------------------------------------------- */
+.emby-button.raised {
+    background: var(--tv-fill) !important;
+    color: var(--tv-text) !important;
+    border-radius: var(--tv-radius-control) !important;
+    font-weight: 600;
+    box-shadow: none !important;
+}
+
+.emby-button.raised:hover {
+    background: var(--tv-fill-hover) !important;
+}
+
+.emby-button.button-submit,
+.emby-button.raised.button-submit {
+    background: var(--tv-primary) !important;
+    color: var(--tv-on-primary) !important;
+    border-radius: var(--tv-radius-pill) !important;
+}
+
+.emby-button.button-submit:hover {
+    background: #e5e5ea !important;
+}
+
+.emby-button.button-flat:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: var(--tv-radius-control);
+}
+
+.emby-button:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   10. Formulare
+   -------------------------------------------------------------------------- */
+.emby-input,
+.emby-textarea,
+.emby-select-withcolor {
+    background: var(--tv-fill) !important;
+    color: var(--tv-text) !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--tv-radius-control) !important;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.emby-input:focus,
+.emby-textarea:focus,
+.emby-select-withcolor:focus {
+    background: var(--tv-fill-hover) !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55);
+}
+
+.inputLabel,
+.selectLabel,
+.textareaLabel,
+.fieldDescription {
+    color: var(--tv-text-2);
+}
+
+.inputLabelFocused,
+.selectLabelFocused,
+.textareaLabelFocused {
+    color: var(--tv-text) !important;
+}
+
+/* Checkboxen */
+.emby-checkbox:checked + span + .checkboxOutline {
+    background-color: var(--tv-tint) !important;
+    border-color: var(--tv-tint) !important;
+}
+
+.emby-checkbox:focus:not(:checked) + span + .checkboxOutline {
+    border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   11. Dialoge, Aktionsmenüs, Toasts
+   -------------------------------------------------------------------------- */
+.dialog:not(.dialog-fullscreen),
+.actionSheet {
+    background: var(--tv-glass-strong) !important;
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    border: 1px solid var(--tv-glass-border);
+    border-radius: var(--tv-radius-dialog) !important;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.dialog-fullscreen {
+    background: var(--tv-bg) !important;
+}
+
+.formDialogHeader,
+.formDialogFooter {
+    background: transparent !important;
+    border-color: var(--tv-glass-border) !important;
+}
+
+.actionSheetMenuItem {
+    border-radius: var(--tv-radius-control);
+}
+
+.actionSheetMenuItem:hover,
+.actionSheetMenuItem:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.toast {
+    background: var(--tv-glass-strong) !important;
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    color: var(--tv-text) !important;
+    border: 1px solid var(--tv-glass-border);
+    border-radius: var(--tv-radius-pill) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   12. Listen (Einstellungen, Episodenlisten)
+   -------------------------------------------------------------------------- */
+.listItem {
+    border-radius: var(--tv-radius-control);
+    transition: background-color 0.2s ease;
+}
+
+.listItem:hover,
+.listItem:focus {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.listItemImage {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.paperList {
+    background: var(--tv-surface) !important;
+    border-radius: var(--tv-radius-card);
+    overflow: hidden;
+}
+
+
+/* --------------------------------------------------------------------------
+   13. Videoplayer (OSD)
+   -------------------------------------------------------------------------- */
+.osdHeader {
+    background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)) !important;
+}
+
+.videoOsdBottom {
+    background: linear-gradient(to top,
+                rgba(0, 0, 0, 0.8) 0%,
+                rgba(0, 0, 0, 0.4) 60%,
+                rgba(0, 0, 0, 0) 100%) !important;
+}
+
+.osdTitle,
+.osdMediaInfo {
+    font-weight: 700;
+}
+
+.osdSecondaryMediaInfo,
+.osdTimeText {
+    color: var(--tv-text-2);
+}
+
+/* Fortschritts- und Lautstärkeregler: weiß wie bei tvOS */
+.mdl-slider-background-lower {
+    background-color: #ffffff !important;
+}
+
+.mdl-slider-background-upper {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.mdl-slider::-webkit-slider-thumb {
+    background: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.mdl-slider::-moz-range-thumb {
+    background: #ffffff !important;
+    border: none;
+}
+
+.sliderBubble {
+    background: var(--tv-glass-strong) !important;
+    -webkit-backdrop-filter: var(--tv-blur);
+    backdrop-filter: var(--tv-blur);
+    border-radius: var(--tv-radius-control) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   14. Anpassungen für Layouts & Barrierefreiheit
+   -------------------------------------------------------------------------- */
+
+/* Touch-Geräte: kein Hover-Zoom, nur dezentes Feedback */
+@media (hover: none) {
+    .card:hover .cardScalable {
+        transform: none;
+        box-shadow: var(--tv-shadow);
+    }
+
+    .card:hover .cardScalable::after {
+        opacity: 0;
+    }
+}
+
+/* Mobil: kleinere Radien, Tab-Leiste darf scrollen */
+.layout-mobile {
+    --tv-radius-card: 10px;
+}
+
+.layout-mobile .headerTabs .emby-tabs-slider {
+    max-width: calc(100vw - 2em);
+    overflow-x: auto;
+}
+
+/* Fernseher (TV-Layout): etwas stärkerer Fokus-Effekt */
+.layout-tv {
+    --tv-focus-scale: 1.12;
+}
+
+/* Reduzierte Bewegung respektieren */
+@media (prefers-reduced-motion: reduce) {
+    .cardBox,
+    .cardScalable,
+    .cardScalable::after,
+    .mainDetailButtons .detailButton {
+        transition: none !important;
+    }
+
+    .card:hover .cardScalable,
+    .card:focus .cardScalable,
+    .card:focus-within .cardScalable {
+        transform: none;
+    }
+}
+
+/* Fallback ohne backdrop-filter: deckendere Flächen */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    :root {
+        --tv-glass: rgba(44, 44, 48, 0.92);
+        --tv-glass-strong: rgba(28, 28, 30, 0.97);
+    }
+}
