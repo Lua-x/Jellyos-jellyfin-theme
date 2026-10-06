@@ -1,18 +1,40 @@
 # Jellyfin tvOS Theme
 
-Ein Custom-CSS-Theme für den Jellyfin-Web-Client im Stil von Apple TV (tvOS):
-schwarzer Hintergrund, zentrierte Glas-Tab-Leiste, abgerundete Karten mit
-Fokus-Zoom und Lichtreflex, weiße Pill-Buttons und weiche Verläufe auf der
-Detailseite.
+Ein Custom-CSS-Theme für den Jellyfin-Web-Client im Stil von Apple TV
+(tvOS 26) mit **Liquid Glass**: schwebende Glas-Kapseln mit Lichtkanten und
+Glanz, eine weiche Unschärfe unter der Kopfzeile, Karten mit Glaskante und
+Lichtstreif bei Fokus und federnde Animationen.
+
+![Startseite](preview/screenshots/startseite-scroll.webp)
+
+| Detailseite | Player |
+|---|---|
+| ![Detailseite](preview/screenshots/detail.webp) | ![Player](preview/screenshots/player.webp) |
 
 - Reines CSS – kein Plugin, kein JavaScript nötig
 - Schrift (Inter) liegt im Repo, keine Google-Fonts-Anfragen
 - Auf Apple-Geräten wird automatisch SF Pro genutzt
 - Desktop-, Mobil- und TV-Layout von Jellyfin werden berücksichtigt
-- Respektiert „Bewegung reduzieren“
+- Respektiert „Bewegung reduzieren“ und „Transparenz reduzieren“
 
-Ziel: **Jellyfin 10.9 und neuer** (Web-Client, auch in Jellyfin Media Player
-und den Apps, die den Web-Client nutzen).
+Ziel: **Jellyfin 10.9 und neuer**, Standard-Layout des Web-Clients.
+
+## Liquid Glass – was steckt drin
+
+| Element | Umsetzung |
+|---|---|
+| Tab-Leiste | zentrierte Glas-Kapsel, aktiver Tab als helle Glas-Blase |
+| Kopfzeile | Inhalte verschwimmen weich darunter (Scroll-Kante wie iOS 26), Buttons als Glas-Kreise |
+| Karten | Fokus/Hover: anheben, Glaskante, Glanz und einmaliger Lichtstreif |
+| Detailseite | großes Backdrop mit Verlauf, Glas-Buttons direkt auf dem Bild, „Abspielen“ als milchig-weißes Glas |
+| Panels | Seitenmenü, Dialoge, Aktionsmenüs, Toasts, Musikleiste |
+| Player | Steuerung als schwebende Glas-Fläche über dem Video |
+| Buttons | Kapseln, die beim Drücken federnd nachgeben |
+
+Das Glas besteht aus vier Schichten: Unschärfe mit Farbverstärkung des
+Hintergrunds, eine leichte Tönung für Lesbarkeit, ein Glanz oben links und
+Lichtkanten. Echte Lichtbrechung an den Rändern (wie bei Apple) ist mit
+reinem CSS nicht browserübergreifend möglich.
 
 ## Installation
 
@@ -22,10 +44,11 @@ eine der folgenden Varianten eintragen, dann speichern und die Seite neu laden.
 ### Variante A: über jsDelivr (am einfachsten)
 
 ```css
-@import url("https://cdn.jsdelivr.net/gh/<github-user>/jellyfin-tvos-theme@main/theme/apple-tv.css");
+@import url("https://cdn.jsdelivr.net/gh/<github-user>/jellyfin-tvos-theme@v1.1.0/theme/apple-tv.css");
 ```
 
-Für eine feste Version statt `@main` einen Tag verwenden, z. B. `@v1.0.0`.
+Am besten immer einen Tag (`@v1.1.0`) statt `@main` verwenden – jsDelivr
+hält `@main` eine Weile im Cache, Änderungen kommen dann verzögert an.
 
 ### Variante B: selbst gehostet (ohne Drittanbieter)
 
@@ -54,8 +77,8 @@ Eigene Werte einfach **unter** dem `@import` im Jellyfin-Feld überschreiben:
 @import url("…/apple-tv.css");
 
 :root {
+    --tv-ambient: none;        /* reines Schwarz statt Umgebungslicht */
     --tv-tint: #30d158;        /* Akzentfarbe (z. B. Grün) */
-    --tv-radius-card: 18px;    /* runder */
     --tv-focus-scale: 1.05;    /* dezenterer Zoom */
 }
 ```
@@ -63,46 +86,71 @@ Eigene Werte einfach **unter** dem `@import` im Jellyfin-Feld überschreiben:
 | Variable | Bedeutung |
 |---|---|
 | `--tv-bg` | Seitenhintergrund |
-| `--tv-glass`, `--tv-glass-strong` | Glas-Flächen (Tabs, Drawer, Dialoge) |
+| `--tv-ambient` | Umgebungslicht hinter den Seiten (`none` = aus) |
+| `--lg-filter`, `--lg-filter-panel` | Unschärfe des Glases (`none` = aus) |
+| `--lg-tint`, `--lg-tint-panel` | Tönung des Glases (höher = besser lesbar, weniger Glas) |
+| `--lg-rim`, `--lg-sheen` | Lichtkanten und Glanz |
 | `--tv-text`, `--tv-text-2` | Primär- / Sekundärtext |
-| `--tv-primary`, `--tv-on-primary` | Primär-Button und dessen Textfarbe |
 | `--tv-tint` | Akzent (Links, Checkboxen) |
-| `--tv-radius-card` | Eckenradius der Karten |
+| `--tv-radius-card`, `--tv-radius-dialog` | Eckenradien |
 | `--tv-focus-scale` | Zoom bei Fokus/Hover |
+
+### Schwache Geräte
+
+Unschärfe kostet Grafikleistung, vor allem über laufendem Video. Wenn es
+ruckelt:
+
+```css
+:root {
+    --lg-filter: none;
+    --lg-filter-panel: none;
+    --lg-tint: rgba(44, 44, 48, 0.85);
+    --lg-tint-panel: rgba(28, 28, 30, 0.92);
+}
+```
 
 ## Empfohlene Jellyfin-Einstellungen
 
-Für den Apple-TV-Look unter **Einstellungen → Startseite** bei den Reihen
-„Weiterschauen“ und „Zuletzt hinzugefügt“ Querformat-Bilder (Thumbs)
-verwenden. Unter **Einstellungen → Anzeige** die Hintergründe (Backdrops)
-aktivieren.
+- **Einstellungen → Startseite:** bei „Weiterschauen“ und „Zuletzt
+  hinzugefügt“ Querformat-Bilder (Thumbs) verwenden
+- **Einstellungen → Anzeige:** Hintergründe (Backdrops) aktivieren – das
+  Glas wirkt am besten über Bildern
+- **Layout:** Automatisch, Desktop, Mobil oder TV. Das Layout
+  „Experimentell“ nutzt eine andere Oberfläche und wird nur teilweise erfasst.
 
 ## Vorschau ohne Server
 
-`preview/index.html` ahmt die Jellyfin-Startseite mit denselben CSS-Klassen
-nach. Einfach im Browser öffnen, um Änderungen schnell zu prüfen. Das ersetzt
-keinen Test im echten Jellyfin, da die Vorschau nur einen Teil der Oberfläche
-abbildet.
+Im Ordner `preview/` liegen drei Seiten, die Jellyfin mit denselben
+CSS-Klassen nachbauen: `index.html` (Bibliothek mit Reihen, Buttons, Menü),
+`detail.html` (Detailseite) und `player.html` (Videoplayer). Einfach im
+Browser öffnen. Das ersetzt keinen Test im echten Jellyfin.
 
 ## Aufbau
 
 ```
-theme/apple-tv.css   Das Theme (eine Datei, in Abschnitte gegliedert)
-fonts/               Inter (variabel, latin) + Lizenz (SIL OFL 1.1)
-preview/index.html   Statische Vorschau mit Jellyfin-Klassen
-CLAUDE.md            Hinweise für die Weiterentwicklung mit Claude Code
+theme/apple-tv.css     Das Theme (eine Datei, in Abschnitte gegliedert)
+fonts/                 Inter (variabel, latin) + Lizenz (SIL OFL 1.1)
+preview/               Vorschau-Seiten, Platzhalterbilder, Screenshots
+CLAUDE.md              Hinweise für die Weiterentwicklung mit Claude Code
 ```
 
 ## Bekannte Grenzen
 
+- Wirkt nur in Clients, die den Web-Client nutzen (Browser, Jellyfin Media
+  Player, Android-/iOS-App). Native Apps wie die Android-TV-App oder Swiftfin
+  bringen ihre eigene Oberfläche mit.
 - Jellyfin ändert Klassennamen gelegentlich zwischen Versionen. Wenn nach
   einem Update etwas nicht greift, mit den Entwicklertools (F12) die aktuelle
   Klasse prüfen.
-- Ein „Top Shelf“-Hero-Banner wie auf dem Apple TV ist mit reinem CSS nicht
-  möglich; dafür bräuchte es JavaScript (z. B. über ein Plugin).
+- Echte Lichtbrechung und ein „Top Shelf“-Hero-Banner bräuchten JavaScript
+  (z. B. über ein Plugin) und sind nicht Teil dieses Themes.
+- Ältere Browser ohne `backdrop-filter` bekommen deckende statt gläserne
+  Flächen.
 
 ## Lizenz
 
 Theme: MIT (siehe `LICENSE`).
 Schrift Inter: SIL Open Font License 1.1 (siehe `fonts/OFL.txt`).
-Nicht mit Apple verbunden; „Apple TV“ und „tvOS“ sind Marken von Apple Inc.
+Icons in der Vorschau: Material Icons (Apache 2.0).
+Nicht mit Apple verbunden; „Apple TV“, „tvOS“ und „Liquid Glass“ sind Marken
+bzw. Bezeichnungen von Apple Inc.

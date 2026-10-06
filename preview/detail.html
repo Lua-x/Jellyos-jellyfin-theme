@@ -1,0 +1,90 @@
+<!doctype html>
+<!--
+    Vorschau: Detailseite eines Films (Backdrop, Glas-Buttons, Besetzung).
+    Ahmt Jellyfin mit denselben CSS-Klassen nach.
+-->
+<html lang="de" class="layout-desktop">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>tvOS Theme – Detailseite</title>
+    <link rel="stylesheet" href="preview.css">
+    <link rel="stylesheet" href="../theme/apple-tv.css">
+</head>
+<body>
+<div class="backgroundContainer"></div>
+
+<header class="skinHeader">
+    <div class="headerTop">
+        <div class="headerLeft">
+            <button class="headerButton headerBackButton" title="Zurück"><span data-icon="arrow_back"></span></button>
+        </div>
+        <div class="headerRight">
+            <button class="headerButton headerCastButton" title="Wiedergabe auf"><span data-icon="cast"></span></button>
+            <button class="headerButton headerSearchButton" title="Suche"><span data-icon="search"></span></button>
+            <button class="headerButton headerUserButton" title="Benutzer"><span data-icon="person"></span></button>
+        </div>
+    </div>
+</header>
+
+<div class="page libraryPage itemDetailPage selfBackdropPage">
+    <div class="itemBackdrop" style="background-image:url(assets/berge.svg)"></div>
+
+    <div class="detailPageWrapperContainer">
+        <div class="detailPagePrimaryContainer">
+            <div class="detailRibbon">
+                <div class="infoWrapper">
+                    <div class="nameContainer">
+                        <h1 class="itemName infoText parentNameLast">Die letzte Grenze</h1>
+                    </div>
+                    <div class="itemMiscInfo itemMiscInfo-primary">
+                        <span>2024</span><span>2 Std. 8 Min.</span><span>FSK 12</span><span>★ 7,9</span>
+                    </div>
+                    <div class="itemMiscInfo itemMiscInfo-secondary">
+                        <span>Abenteuer, Drama</span>
+                    </div>
+                </div>
+                <div class="mainDetailButtons">
+                    <button class="emby-button button-flat detailButton btnPlay" title="Abspielen"><span data-icon="play_arrow"></span></button>
+                    <button class="emby-button button-flat detailButton" title="Gesehen"><span data-icon="check"></span></button>
+                    <button class="emby-button button-flat detailButton" title="Favorit"><span data-icon="favorite_border"></span></button>
+                    <button class="emby-button button-flat detailButton" title="Mehr"><span data-icon="more_horiz"></span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="detailPageSecondaryContainer">
+            <p class="overview">
+                Eine Bergsteigerin bricht zur letzten unbezwungenen Wand des Gebirges auf,
+                während ein Sturm aufzieht. Platzhaltertext für die Vorschau.
+            </p>
+
+            <div class="verticalSection">
+                <h2 class="sectionTitle sectionTitle-cards">Besetzung &amp; Crew</h2>
+                <div class="itemsContainer" id="castContent"></div>
+            </div>
+
+            <div class="verticalSection">
+                <h2 class="sectionTitle sectionTitle-cards">Mehr wie dieses</h2>
+                <div class="itemsContainer" id="rowSimilar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+<script>
+    reihe("castContent", [
+        ["Mara Ellison", "Lena"], ["Jonas Brink", "Theo"], ["Ada Novak", "Iris"],
+        ["Kian Herzog", "Bergführer"], ["Selma Vogt", "Regie"], ["Tom Reiter", "Kamera"]
+    ].map(([titel, info], i) => ({ titel, info, typ: "square", index: i + 2 })));
+
+    reihe("rowSimilar", [
+        "Gipfelsturm", "Das weiße Schweigen", "Nordwand", "Über den Wolken",
+        "Eiswind", "Der lange Abstieg", "Höhenrausch"
+    ].map((titel, i) => ({ titel, info: String(2016 + i), index: i + 3 })));
+
+    iconsEinsetzen();
+</script>
+</body>
+</html>

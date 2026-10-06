@@ -1,52 +1,16 @@
 <!doctype html>
 <!--
-    Vorschau-Seite: ahmt die Jellyfin-Startseite mit denselben CSS-Klassen nach,
-    damit das Theme ohne laufenden Server getestet werden kann.
-    Die Bilder sind Farbverläufe als Platzhalter.
-    Öffnen: einfach im Browser (lokal) oder per „npx serve .“ im Repo-Ordner.
+    Vorschau: Bibliothek „Filme“ mit Reihen, Bedienelementen und Dialog.
+    Ahmt Jellyfin mit denselben CSS-Klassen nach, damit das Theme ohne
+    Server getestet werden kann. Bilder sind Platzhalter aus assets/.
+    Weitere Seiten: detail.html, player.html
 -->
 <html lang="de" class="layout-desktop">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>tvOS Theme – Vorschau</title>
-
-    <!-- Minimales Grundgerüst, das Jellyfin sonst selbst mitbringt -->
-    <style>
-        * { box-sizing: border-box; }
-        body { margin: 0; color: #fff; }
-        .material-icons { font-family: inherit; font-style: normal; }
-        .skinHeader { position: sticky; top: 0; z-index: 10; padding: 0.6em 3.3%; }
-        .headerTop { display: flex; align-items: center; justify-content: space-between; }
-        .pageTitle { margin: 0; font-size: 1.4em; }
-        .headerRight { display: flex; gap: 0.4em; }
-        .headerButton { width: 2.4em; height: 2.4em; border: 0; background: none; color: #fff; font-size: 1em; cursor: pointer; }
-        .emby-tab-button { border: 0; background: none; font-size: 0.95em; cursor: pointer; }
-        .page { padding: 1em 3.3% 4em; }
-        .verticalSection { margin-top: 1.4em; }
-        .sectionTitle { margin: 0 0 0.6em; }
-        .itemsContainer { display: flex; gap: 1.4em; overflow-x: auto; padding: 14px 6px 22px; }
-        .card { flex: 0 0 auto; outline: none; cursor: pointer; }
-        .overflowBackdropCard { width: 300px; }
-        .overflowPortraitCard { width: 170px; }
-        .cardScalable { position: relative; }
-        .cardPadder-backdrop { padding-bottom: 56.25%; }
-        .cardPadder-portrait { padding-bottom: 150%; }
-        .cardImageContainer { position: absolute; inset: 0; background-size: cover; }
-        .innerCardFooter { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; }
-        .itemProgressBarForeground { height: 100%; }
-        .playedIndicator { position: absolute; top: 8px; right: 8px; z-index: 2; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; }
-        .cardText { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0.15em 0.2em; }
-        .demoRow { display: flex; gap: 1em; align-items: center; flex-wrap: wrap; }
-        .emby-button { border: 0; padding: 0.8em 1.6em; font-size: 0.95em; cursor: pointer; }
-        .emby-input { padding: 0.8em 1em; font-size: 1em; width: 280px; }
-        .detailButton { width: 3.2em; height: 3.2em; color: #fff; font-size: 1em; cursor: pointer; }
-        .mainDetailButtons { display: flex; gap: 0.8em; }
-        .dialog { padding: 1.4em 1.6em; max-width: 360px; }
-        .actionSheetMenuItem { display: block; padding: 0.7em 0.9em; }
-    </style>
-
-    <!-- Das eigentliche Theme -->
+    <link rel="stylesheet" href="preview.css">
     <link rel="stylesheet" href="../theme/apple-tv.css">
 </head>
 <body>
@@ -54,19 +18,23 @@
 
 <header class="skinHeader">
     <div class="headerTop">
-        <h3 class="pageTitle">Startseite</h3>
+        <div class="headerLeft">
+            <button class="headerButton mainDrawerButton" title="Menü"><span data-icon="menu"></span></button>
+            <h3 class="pageTitle">Filme</h3>
+        </div>
         <div class="headerRight">
-            <button class="headerButton">⌕</button>
-            <button class="headerButton">☰</button>
+            <button class="headerButton headerCastButton" title="Wiedergabe auf"><span data-icon="cast"></span></button>
+            <button class="headerButton headerSearchButton" title="Suche"><span data-icon="search"></span></button>
+            <button class="headerButton headerUserButton" title="Benutzer"><span data-icon="person"></span></button>
         </div>
     </div>
     <div class="headerTabs sectionTabs">
         <div class="emby-tabs-slider">
-            <button class="emby-tab-button emby-tab-button-active">Startseite</button>
             <button class="emby-tab-button">Filme</button>
-            <button class="emby-tab-button">Serien</button>
-            <button class="emby-tab-button">Anime</button>
+            <button class="emby-tab-button emby-tab-button-active">Vorschläge</button>
             <button class="emby-tab-button">Favoriten</button>
+            <button class="emby-tab-button">Sammlungen</button>
+            <button class="emby-tab-button">Genres</button>
         </div>
     </div>
 </header>
@@ -79,19 +47,13 @@
     </div>
 
     <div class="verticalSection">
-        <h2 class="sectionTitle sectionTitle-cards">Zuletzt hinzugefügt – Filme</h2>
-        <div class="itemsContainer" id="rowMovies"></div>
+        <h2 class="sectionTitle sectionTitle-cards">Zuletzt hinzugefügt</h2>
+        <div class="itemsContainer" id="rowLatest"></div>
     </div>
 
     <div class="verticalSection">
         <h2 class="sectionTitle">Bedienelemente</h2>
         <div class="demoRow">
-            <div class="mainDetailButtons">
-                <button class="emby-button detailButton btnPlay">▶</button>
-                <button class="emby-button detailButton">✓</button>
-                <button class="emby-button detailButton">♡</button>
-                <button class="emby-button detailButton">⋯</button>
-            </div>
             <button class="emby-button raised button-submit">Speichern</button>
             <button class="emby-button raised">Abbrechen</button>
             <input class="emby-input" placeholder="Suchen …">
@@ -99,61 +61,34 @@
     </div>
 
     <div class="verticalSection">
-        <h2 class="sectionTitle">Dialog</h2>
+        <h2 class="sectionTitle">Aktionsmenü</h2>
         <div class="dialog actionSheet">
-            <span class="actionSheetMenuItem">Abspielen</span>
-            <span class="actionSheetMenuItem">Zur Playlist hinzufügen</span>
-            <span class="actionSheetMenuItem">Als gesehen markieren</span>
+            <span class="actionSheetMenuItem"><span data-icon="play_arrow"></span>Abspielen</span>
+            <span class="actionSheetMenuItem"><span data-icon="playlist_add"></span>Zur Playlist hinzufügen</span>
+            <span class="actionSheetMenuItem"><span data-icon="check"></span>Als gesehen markieren</span>
+            <span class="actionSheetMenuItem"><span data-icon="favorite_border"></span>Zu Favoriten</span>
         </div>
     </div>
 </main>
 
+<div class="toast">Zur Playlist „Filmabend“ hinzugefügt</div>
+
+<script src="preview.js"></script>
 <script>
-    // Platzhalter-Karten erzeugen (Verläufe statt echter Bilder)
-    const farben = [
-        ["#1d3b6b", "#e2725b"], ["#0f5132", "#9bd18b"], ["#3a1c71", "#d76d77"],
-        ["#232526", "#c9a227"], ["#134e5e", "#71b280"], ["#41295a", "#2f0743"],
-        ["#8e2de2", "#4a00e0"], ["#cb356b", "#bd3f32"]
-    ];
+    reihe("rowResume", [
+        { titel: "Andor", info: "S2:E4", fortschritt: 62 },
+        { titel: "The Expanse", info: "S3:E1", fortschritt: 18 },
+        { titel: "Frieren", info: "Folge 12", fortschritt: 85 },
+        { titel: "Severance", info: "S2:E7", fortschritt: 40 },
+        { titel: "Dune: Part Two", info: "1 Std. 12 Min. übrig", fortschritt: 30 }
+    ].map((k, i) => ({ ...k, typ: "backdrop", index: i })));
 
-    function karte(titel, info, typ, i, fortschritt) {
-        const [a, b] = farben[i % farben.length];
-        const padder = typ === "backdrop" ? "cardPadder-backdrop" : "cardPadder-portrait";
-        const kartenTyp = typ === "backdrop" ? "overflowBackdropCard" : "overflowPortraitCard";
-        const balken = fortschritt
-            ? `<div class="innerCardFooter"><div class="itemProgressBar">
-                 <div class="itemProgressBarForeground" style="width:${fortschritt}%"></div>
-               </div></div>`
-            : "";
-        const gesehen = !fortschritt && i % 4 === 1
-            ? `<div class="playedIndicator"><span class="material-icons">✓</span></div>`
-            : "";
-        return `
-        <div class="card ${kartenTyp}" tabindex="0">
-            <div class="cardBox cardBox-bottompadded">
-                <div class="cardScalable">
-                    <div class="cardPadder ${padder}"></div>
-                    <div class="cardImageContainer" style="background:linear-gradient(135deg,${a},${b})"></div>
-                    ${gesehen}${balken}
-                </div>
-                <div class="cardFooter">
-                    <div class="cardText cardText-first">${titel}</div>
-                    <div class="cardText">${info}</div>
-                </div>
-            </div>
-        </div>`;
-    }
-
-    document.getElementById("rowResume").innerHTML = [
-        ["Andor", "S2:E4", 62], ["The Expanse", "S3:E1", 18],
-        ["Frieren", "Folge 12", 85], ["Severance", "S2:E7", 40],
-        ["Dune: Part Two", "1 Std. 12 Min. übrig", 30]
-    ].map((k, i) => karte(k[0], k[1], "backdrop", i, k[2])).join("");
-
-    document.getElementById("rowMovies").innerHTML = [
+    reihe("rowLatest", [
         "Blade Runner 2049", "Interstellar", "Arrival", "The Batman",
         "Oppenheimer", "Top Gun: Maverick", "Mad Max: Fury Road", "Rogue One"
-    ].map((t, i) => karte(t, String(2014 + (i % 10)), "portrait", i)).join("");
+    ].map((titel, i) => ({ titel, info: String(2014 + i), index: i, gesehen: i % 3 === 1 })));
+
+    iconsEinsetzen();
 </script>
 </body>
 </html>

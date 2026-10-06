@@ -1,0 +1,381 @@
+/* ==========================================================================
+   Vorschau-Grundgerüst
+   Bildet nur das Layout nach, das Jellyfin selbst mitbringt (Positionen,
+   Größen). Das Aussehen kommt ausschließlich aus theme/apple-tv.css.
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+.icon {
+    display: block;
+    width: 1.5em;
+    height: 1.5em;
+    fill: currentColor;
+}
+
+.backgroundContainer {
+    position: fixed;
+    inset: 0;
+}
+
+/* Seiten liegen wie in Jellyfin positioniert über dem Hintergrund */
+.page {
+    position: relative;
+}
+
+/* ---------- Kopfzeile ---------- */
+.skinHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    padding: 0.5em 3.3% 0.3em;
+}
+
+.headerTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3.2em;
+}
+
+.headerLeft,
+.headerRight {
+    display: flex;
+    align-items: center;
+}
+
+.pageTitle {
+    margin: 0 0 0 0.4em;
+    font-size: 1.3em;
+}
+
+.headerButton {
+    display: grid;
+    place-items: center;
+    width: 2.6em;
+    height: 2.6em;
+    padding: 0;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.headerButton .icon {
+    width: 1.35em;
+    height: 1.35em;
+}
+
+.emby-tab-button {
+    border: 0;
+    font-size: 0.95em;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* ---------- Seiten & Reihen ---------- */
+.page {
+    padding: 8.4em 3.3% 6em;
+}
+
+.sectionTitle {
+    margin: 0 0 0.4em;
+}
+
+.itemsContainer {
+    display: flex;
+    gap: 1.4em;
+    overflow-x: auto;
+    padding: 14px 6px 22px;
+    scrollbar-width: none;
+}
+
+.card {
+    flex: 0 0 auto;
+    cursor: pointer;
+}
+
+.overflowBackdropCard { width: 300px; }
+.overflowPortraitCard { width: 168px; }
+.overflowSquareCard  { width: 128px; }
+
+.cardScalable { position: relative; }
+.cardPadder-backdrop { padding-bottom: 56.25%; }
+.cardPadder-portrait { padding-bottom: 150%; }
+.cardPadder-square   { padding-bottom: 100%; }
+
+.cardImageContainer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.cardOverlayContainer {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 0.4em;
+    padding: 0.7em;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.card:hover .cardOverlayContainer { opacity: 1; }
+
+.cardOverlayButton {
+    display: grid;
+    place-items: center;
+    width: 2.4em;
+    height: 2.4em;
+    padding: 0;
+    cursor: pointer;
+}
+
+.cardOverlayButton .icon {
+    width: 1.2em;
+    height: 1.2em;
+}
+
+.innerCardFooter {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+.itemProgressBarForeground { height: 100%; }
+
+.playedIndicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.playedIndicator .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.cardText {
+    padding: 0.15em 0.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------- Bedienelemente ---------- */
+.demoRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1em;
+}
+
+.emby-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    border: 0;
+    padding: 0.8em 1.6em;
+    font-size: 0.95em;
+    cursor: pointer;
+}
+
+.emby-input {
+    width: 280px;
+    padding: 0.8em 1em;
+    font-size: 1em;
+}
+
+.dialog {
+    max-width: 340px;
+    padding: 0.7em;
+}
+
+.actionSheetMenuItem {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    padding: 0.75em 0.9em;
+    cursor: pointer;
+}
+
+.actionSheetMenuItem .icon {
+    width: 1.3em;
+    height: 1.3em;
+}
+
+.toast {
+    position: fixed;
+    left: 2em;
+    bottom: 2em;
+    z-index: 1000;
+    padding: 0.9em 1.6em;
+}
+
+/* ---------- Detailseite ---------- */
+.page.itemDetailPage {
+    padding: 0;
+}
+
+.itemBackdrop {
+    height: 40vh;
+    background-size: cover;
+    background-position: center 70%;
+}
+
+.detailPagePrimaryContainer {
+    position: relative;
+    margin-top: -11em;
+    padding: 0 3.3%;
+}
+
+.detailRibbon {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5em;
+}
+
+.itemName {
+    margin: 0 0 0.15em;
+    font-size: 3.2em;
+}
+
+.itemMiscInfo {
+    display: flex;
+    gap: 0.9em;
+    margin: 0.2em 0;
+}
+
+.mainDetailButtons {
+    display: flex;
+    gap: 0.7em;
+}
+
+.detailButton {
+    display: grid;
+    place-items: center;
+    width: 3.4em;
+    height: 3.4em;
+    padding: 0;
+    cursor: pointer;
+}
+
+.detailPageSecondaryContainer {
+    padding: 1.4em 3.3% 4em;
+}
+
+.overview {
+    max-width: 60em;
+    margin: 0 0 1.6em;
+    font-size: 1.05em;
+}
+
+/* ---------- Player ---------- */
+.videoPlayerContainer {
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.videoOsdBottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    padding-top: 8em;
+}
+
+.osdControls { flex: 1; }
+
+.osdTextContainer {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.3em;
+}
+
+.osdTitle { font-size: 1.15em; }
+
+.sliderContainer {
+    position: relative;
+    margin: 0.7em 0 0.4em;
+}
+
+.mdl-slider-background-flex {
+    display: flex;
+    height: 5px;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.mdl-slider-background-lower { flex: 0 0 38%; }
+.mdl-slider-background-upper { flex: 1; }
+
+.mdl-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -6px;
+    width: 100%;
+    height: 17px;
+    margin: 0;
+    background: transparent;
+}
+
+.mdl-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.osdButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+}
+
+.paper-icon-button-light {
+    display: grid;
+    place-items: center;
+    width: 2.8em;
+    height: 2.8em;
+    border: 0;
+    border-radius: 50%;
+    padding: 0;
+    background: none;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.paper-icon-button-light.btnPlayPause .icon {
+    width: 2.2em;
+    height: 2.2em;
+}
+
+.osdButtons .spacer { flex: 1; }

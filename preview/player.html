@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+    Vorschau: Videoplayer mit eingeblendeter Steuerung (OSD).
+    Das „Video“ ist ein Standbild aus assets/.
+-->
+<html lang="de" class="layout-desktop">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>tvOS Theme – Player</title>
+    <link rel="stylesheet" href="preview.css">
+    <link rel="stylesheet" href="../theme/apple-tv.css">
+</head>
+<body>
+<div class="videoPlayerContainer" style="background-image:url(assets/weltraum.svg)"></div>
+
+<header class="skinHeader osdHeader">
+    <div class="headerTop">
+        <div class="headerLeft">
+            <button class="headerButton headerBackButton" title="Zurück"><span data-icon="arrow_back"></span></button>
+        </div>
+        <div class="headerRight">
+            <button class="headerButton headerCastButton" title="Wiedergabe auf"><span data-icon="cast"></span></button>
+        </div>
+    </div>
+</header>
+
+<div class="videoOsdBottom videoOsdBottom-maincontrols">
+    <div class="osdControls">
+        <div class="osdTextContainer osdMainTextContainer">
+            <div class="osdTitle">The Expanse – S3:E1 „Kampf oder Flucht“</div>
+            <div class="osdTimeText">17:42 / 46:10</div>
+        </div>
+
+        <div class="sliderContainer">
+            <div class="mdl-slider-background-flex">
+                <div class="mdl-slider-background-lower"></div>
+                <div class="mdl-slider-background-upper"></div>
+            </div>
+            <input class="mdl-slider osdPositionSlider" type="range" min="0" max="100" value="38">
+        </div>
+
+        <div class="osdButtons buttons">
+            <button class="paper-icon-button-light" title="Untertitel"><span data-icon="subtitles"></span></button>
+            <span class="spacer"></span>
+            <button class="paper-icon-button-light" title="Zurück"><span data-icon="skip_previous"></span></button>
+            <button class="paper-icon-button-light btnPlayPause" title="Pause"><span data-icon="pause"></span></button>
+            <button class="paper-icon-button-light" title="Weiter"><span data-icon="skip_next"></span></button>
+            <span class="spacer"></span>
+            <button class="paper-icon-button-light" title="Lautstärke"><span data-icon="volume_up"></span></button>
+            <button class="paper-icon-button-light" title="Vollbild"><span data-icon="fullscreen"></span></button>
+        </div>
+    </div>
+</div>
+
+<script src="preview.js"></script>
+<script>
+    iconsEinsetzen();
+</script>
+</body>
+</html>
