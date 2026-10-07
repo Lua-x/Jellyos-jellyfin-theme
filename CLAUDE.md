@@ -1,89 +1,97 @@
 # CLAUDE.md
 
-Hinweise für Claude Code bei der Arbeit an diesem Repo.
+Notes for Claude Code when working on this repo.
 
-## Projekt
+## Project
 
 Jellyos (https://github.com/Lua-x/Jellyos-jellyfin-theme):
-Custom-CSS-Theme für den Jellyfin-Web-Client (10.9+, Standard-Layout) im
-Apple-TV-/tvOS-26-Stil mit Liquid Glass. Reines CSS, kein Build-Schritt.
-Wird in Jellyfin per `@import` eingebunden.
+Custom CSS theme for the Jellyfin web client (10.9+, standard layout) in the
+Apple TV / tvOS 26 style with Liquid Glass. Pure CSS, no build step.
+Included in Jellyfin via `@import`.
 
-## Regeln
+## Rules
 
-- Kommentare und Dokumentation auf Deutsch.
-- Alles Theme-CSS liegt in `theme/apple-tv.css`, gegliedert in 15
-  nummerierte Abschnitte (Übersicht im Kopfkommentar). Neue Regeln in den
-  passenden Abschnitt einsortieren.
-- Farben, Radien, Schatten, Glas und Animationen nur über die `--tv-*`- und
-  `--lg-*`-Variablen in Abschnitt 2 – keine neuen festen Werte, wenn eine
-  Variable passt.
-- Keine externen Ressourcen (Fonts, Bilder, CDNs) einbinden. Assets kommen ins
-  Repo und werden relativ zur CSS-Datei geladen.
-- `!important` nur, wenn Jellyfins eigene Styles sonst gewinnen.
-- Bewegungseffekte immer auch im `prefers-reduced-motion`-Block abschalten.
-- Touch-Geräte (`@media (hover: none)`) und `.layout-mobile` / `.layout-tv`
-  mitdenken.
+- Comments and documentation in English.
+- All theme CSS lives in `theme/apple-tv.css`, split into 15 numbered
+  sections (overview in the header comment). Put new rules in the matching
+  section.
+- Colors, radii, shadows, glass and animations only via the `--tv-*` and
+  `--lg-*` variables in section 2 – no new hard-coded values if a variable
+  fits.
+- Don't include external resources (fonts, images, CDNs). Assets go into the
+  repo and are loaded relative to the CSS file.
+- Use `!important` only when Jellyfin's own styles would win otherwise.
+- Always disable motion effects in the `prefers-reduced-motion` block too.
+- Keep touch devices (`@media (hover: none)`) and `.layout-mobile` /
+  `.layout-tv` in mind.
+- Use `em` for sizes inside cards so they scale with every resolution.
 
-## Liquid Glass – Regeln
+## Liquid Glass – rules
 
-- Neue Glas-Elemente in die Selektor-Gruppen in Abschnitt 3 aufnehmen:
-  „Glas“ für kleine Bedienelemente, „Glas-Panels“ für Flächen mit viel Text.
-  Material nicht pro Element neu zusammenbauen.
-- **Backdrop-Root-Falle:** Hat ein Vorfahr eines Glas-Elements `filter`,
-  `opacity < 1`, `mask`, `clip-path`, `mix-blend-mode` oder selbst
-  `backdrop-filter`, sieht das Glas nur noch diesen Vorfahren statt der Seite.
-  Deshalb hat `.skinHeader` keinen eigenen Blur; die Scroll-Kante liegt im
-  Pseudo-Element `.skinHeader::before`.
-- Kein `backdrop-filter` auf Elementen, die hundertfach vorkommen (Karten,
-  Indikatoren) – kostet zu viel Leistung beim Scrollen.
-- Kein Blur über laufendem Video außer der OSD-Steuerung.
-- Kein Außenschatten auf Elementen, die per `transform` aus dem Bild geschoben
-  werden (Drawer, Musikleiste) – der Schatten blitzt sonst am Rand hervor.
-- Neue Easing-Funktionen mit `linear()` nur innerhalb des `@supports`-Blocks
-  in Abschnitt 15 setzen (ältere Engines, z. B. in Jellyfin Media Player).
-- Kein `background` auf `body` – würde Jellyfins Backdrop-Ebene verdecken.
+- Add new glass elements to the selector groups in section 3: "Glass" for
+  small controls, "Glass panels" for surfaces with a lot of text. Don't
+  rebuild the material per element.
+- **Backdrop root trap:** If an ancestor of a glass element has `filter`,
+  `opacity < 1`, `mask`, `clip-path`, `mix-blend-mode` or its own
+  `backdrop-filter`, the glass only sees that ancestor instead of the page.
+  That's why `.skinHeader` has no blur of its own; the scroll edge lives in
+  the pseudo-element `.skinHeader::before`.
+- No `backdrop-filter` on elements that appear hundreds of times (cards,
+  indicators) – too expensive while scrolling. Exception: the hover overlay
+  buttons, which only exist on the hovered card.
+- No blur over playing video except for the OSD controls.
+- No outer shadow on elements that are moved out of view with `transform`
+  (drawer, music bar) – the shadow would peek out at the edge.
+- Only set new easing functions using `linear()` inside the `@supports`
+  block in section 15 (older engines, e.g. in Jellyfin Media Player).
+- No `background` on `body` – it would cover Jellyfin's backdrop layer.
 
-## Jellyfin-Selektoren (Auswahl)
+## Jellyfin selectors (selection)
 
-| Bereich | Klassen |
+| Area | Classes |
 |---|---|
-| Kopfzeile / Tabs | `.skinHeader`, `.headerButton`, `.headerTabs`, `.emby-tabs-slider`, `.emby-tab-button`, `.emby-tab-button-active` |
+| Header / tabs | `.skinHeader`, `.headerButton`, `.headerTabs`, `.emby-tabs-slider`, `.emby-tab-button`, `.emby-tab-button-active` |
 | Drawer | `.mainDrawer`, `.navMenuOption`, `.navMenuOption-selected` |
-| Karten | `.card`, `.cardBox`, `.cardScalable`, `.cardImageContainer`, `.cardOverlayContainer`, `.cardOverlayButton`, `.cardFooter`, `.cardText`, `.itemProgressBar` |
-| Detailseite | `.itemBackdrop`, `.detailRibbon`, `.detailPagePrimaryContainer`, `.mainDetailButtons`, `.detailButton`, `.btnPlay`, `.btnResume` |
-| Formulare | `.emby-input`, `.emby-select-withcolor`, `.emby-checkbox`, `.checkboxOutline`, `.searchfields-txtSearch` |
-| Dialoge | `.dialog`, `.dialog-fullscreen`, `.actionSheet`, `.actionSheetMenuItem`, `.formDialogHeader`, `.formDialogFooter`, `.toast` |
+| Cards | `.card`, `.cardBox`, `.cardScalable`, `.cardImageContainer`, `.cardFooter`, `.cardText`, `.cardText-first`, `.cardText-secondary`, `.itemProgressBar` |
+| Card overlay | `.cardOverlayContainer`, `.cardOverlayFab-primary` (center play), `.cardOverlayButton-br` (bottom right group), `.cardOverlayButton`, `.cardOverlayButtonIcon` |
+| Detail page | `.itemBackdrop`, `.detailRibbon`, `.detailPagePrimaryContainer`, `.mainDetailButtons`, `.detailButton`, `.btnPlay`, `.btnResume` |
+| Forms | `.emby-input`, `.emby-select-withcolor`, `.emby-checkbox`, `.checkboxOutline`, `.searchfields-txtSearch` |
+| Dialogs | `.dialog`, `.dialog-fullscreen`, `.actionSheet`, `.actionSheetMenuItem`, `.formDialogHeader`, `.formDialogFooter`, `.toast` |
 | Player | `.skinHeader.osdHeader`, `.videoOsdBottom`, `.osdControls`, `.mdl-slider`, `.sliderBubble`, `.upNextDialog` |
-| Musik | `.nowPlayingBar` |
+| Music | `.nowPlayingBar` |
 | Layout | `html.layout-desktop`, `html.layout-mobile`, `html.layout-tv` |
 
-Klassennamen im Zweifel im echten Jellyfin mit den DevTools prüfen; Quelle:
-https://github.com/jellyfin/jellyfin-web
+When in doubt, check class names in a real Jellyfin with the DevTools; source:
+https://github.com/jellyfin/jellyfin-web (cards: `src/components/cardbuilder/`).
 
-## Testen
+## Testing
 
-1. Vorschau-Seiten im Browser öffnen: `preview/index.html`,
-   `preview/detail.html`, `preview/player.html`. Sie nutzen dieselben Klassen
-   wie Jellyfin; `preview/preview.css` bildet nur das Layout nach, das
-   Aussehen kommt ausschließlich aus dem Theme.
-2. Für visuelle Prüfung Screenshots per Playwright rendern (Desktop 1440×900
-   und Mobil 390×844 mit `html.layout-mobile`), Hover auf eine Karte
-   simulieren und den Lichtstreif über mehrere Frames prüfen.
-3. Im echten Jellyfin: CSS einbinden und Startseite, Detailseite, Player,
-   Einstellungen und Dialoge durchklicken – auf Desktop und Mobil.
-4. README-Screenshots in `preview/screenshots/` als WebP aktualisieren, wenn
-   sich die Optik deutlich ändert.
+1. Open the preview pages in a browser: `preview/index.html`,
+   `preview/detail.html`, `preview/player.html`. They use the same classes as
+   Jellyfin; `preview/preview.css` only recreates the layout, the look comes
+   exclusively from the theme.
+2. For card changes, also test against Jellyfin's real card CSS: compile
+   `src/components/cardbuilder/card.scss` from jellyfin-web with Sass and load
+   it before the theme – the preview does not reproduce every Jellyfin rule.
+3. For visual checks, render screenshots with Playwright (desktop 1440×900
+   and mobile 390×844 with `html.layout-mobile`), simulate hover on a card
+   and check the light sweep across several frames.
+4. In a real Jellyfin: include the CSS and click through home, detail page,
+   player, settings and dialogs – on desktop and mobile.
+5. Update the README screenshots in `preview/screenshots/` as WebP when the
+   look changes noticeably.
 
-## Versionierung
+## Versioning
 
-Semantic Versioning über Git-Tags (`v1.1.0`). Version auch im Kopfkommentar
-von `theme/apple-tv.css` und im jsDelivr-Link in der README anpassen.
+Semantic Versioning via Git tags (`v1.1.2`). Also update the version in the
+header comment of `theme/apple-tv.css` and in the jsDelivr link in the
+README. jsDelivr only serves a version once its tag exists on GitHub.
 
-## Ideen für später
+## Ideas for later
 
-- Echte Lichtbrechung über SVG-Filter (`feDisplacementMap`), per JavaScript
-  eingefügt – nur Chromium, daher optional als eigene Datei
-- Hero-Banner auf der Startseite (braucht JS, z. B. JavaScript-Injector-Plugin)
-- Detail-Logo (`.detailLogo`) unten links statt oben rechts platzieren
-- Optionale Hell-Variante über eine zweite Datei mit überschriebenen Variablen
+- Real refraction via SVG filters (`feDisplacementMap`), injected with
+  JavaScript – Chromium only, so optional as a separate file
+- Hero banner on the home page (needs JS, e.g. JavaScript Injector plugin)
+- Place the detail logo (`.detailLogo`) at the bottom left instead of the
+  top right
+- Optional light variant via a second file with overridden variables

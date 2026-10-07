@@ -1,104 +1,105 @@
-# Jellyos – Jellyfin-Theme im Apple-TV-Stil
+# Jellyos – Apple TV-style theme for Jellyfin
 
-Ein Custom-CSS-Theme für den Jellyfin-Web-Client im Stil von Apple TV
-(tvOS 26) mit **Liquid Glass**: schwebende Glas-Kapseln mit Lichtkanten und
-Glanz, eine weiche Unschärfe unter der Kopfzeile, Karten mit Glaskante und
-Lichtstreif bei Fokus und federnde Animationen.
+A custom CSS theme for the Jellyfin web client in the style of Apple TV
+(tvOS 26) with **Liquid Glass**: floating glass capsules with rim light and
+sheen, a soft blur under the header, cards with a glass edge and light sweep
+on focus, and springy animations.
 
-![Startseite](preview/screenshots/startseite-scroll.webp)
+![Home](preview/screenshots/home.webp)
 
-| Detailseite | Player |
+| Detail page | Player |
 |---|---|
-| ![Detailseite](preview/screenshots/detail.webp) | ![Player](preview/screenshots/player.webp) |
+| ![Detail page](preview/screenshots/detail.webp) | ![Player](preview/screenshots/player.webp) |
 
-- Reines CSS – kein Plugin, kein JavaScript nötig
-- Schrift (Inter) liegt im Repo, keine Google-Fonts-Anfragen
-- Auf Apple-Geräten wird automatisch SF Pro genutzt
-- Desktop-, Mobil- und TV-Layout von Jellyfin werden berücksichtigt
-- Respektiert „Bewegung reduzieren“ und „Transparenz reduzieren“
+- Pure CSS – no plugin, no JavaScript required
+- The font (Inter) ships with the repo, no requests to Google Fonts
+- Apple devices automatically use SF Pro
+- Supports Jellyfin's desktop, mobile and TV layouts
+- Respects "Reduce motion" and "Reduce transparency"
 
-Ziel: **Jellyfin 10.9 und neuer**, Standard-Layout des Web-Clients.
+Target: **Jellyfin 10.9 and newer**, standard layout of the web client.
 
-## Liquid Glass – was steckt drin
+## Liquid Glass – what's inside
 
-| Element | Umsetzung |
+| Element | Implementation |
 |---|---|
-| Tab-Leiste | zentrierte Glas-Kapsel, aktiver Tab als helle Glas-Blase |
-| Kopfzeile | Inhalte verschwimmen weich darunter (Scroll-Kante wie iOS 26), Buttons als Glas-Kreise |
-| Karten | Fokus/Hover: anheben, Glaskante, Glanz und einmaliger Lichtstreif |
-| Detailseite | großes Backdrop mit Verlauf, Glas-Buttons direkt auf dem Bild, „Abspielen“ als milchig-weißes Glas |
-| Panels | Seitenmenü, Dialoge, Aktionsmenüs, Toasts, Musikleiste |
-| Player | Steuerung als schwebende Glas-Fläche über dem Video |
-| Buttons | Kapseln, die beim Drücken federnd nachgeben |
+| Tab bar | centered glass capsule, active tab as a bright glass bubble |
+| Header | content blurs softly underneath (scroll edge like iOS 26), buttons as glass circles |
+| Cards | on focus/hover: lift, glass edge, sheen and a one-time light sweep |
+| Card overlay | white play capsule in the center, compact glass buttons at the bottom right |
+| Detail page | large backdrop with a fade, glass buttons right on the image, "Play" as milky white glass |
+| Panels | side menu, dialogs, action menus, toasts, music bar |
+| Player | controls as a floating glass surface over the video |
+| Buttons | capsules that give way with a spring when pressed |
 
-Das Glas besteht aus vier Schichten: Unschärfe mit Farbverstärkung des
-Hintergrunds, eine leichte Tönung für Lesbarkeit, ein Glanz oben links und
-Lichtkanten. Echte Lichtbrechung an den Rändern (wie bei Apple) ist mit
-reinem CSS nicht browserübergreifend möglich.
+The glass consists of four layers: blur with a color boost of the background,
+a light tint for readability, a sheen at the top left and rim light. Real
+refraction at the edges (as on Apple devices) is not possible cross-browser
+with pure CSS.
 
 ## Installation
 
-Jellyfin → **Dashboard → Allgemein → Benutzerdefinierter CSS-Code** und
-eine der folgenden Varianten eintragen, dann speichern und die Seite neu laden.
+Jellyfin → **Dashboard → General → Custom CSS code**, add one of the
+following options, save and reload the page with **Ctrl + F5**.
 
-### Variante A: über jsDelivr (am einfachsten)
-
-```css
-@import url("https://cdn.jsdelivr.net/gh/Lua-x/Jellyos-jellyfin-theme@1.1.1/theme/apple-tv.css");
-```
-
-Am besten immer einen Tag (`@1.1.1`) statt `@main` verwenden – jsDelivr
-hält `@main` eine Weile im Cache, Änderungen kommen dann verzögert an.
-
-### Variante B: selbst gehostet (ohne Drittanbieter)
-
-Den Ordner `theme/` **und** `fonts/` auf einen eigenen Webserver legen
-(z. B. nginx im Homelab), sodass die Struktur erhalten bleibt:
-
-```
-https://dein-server/jellyfin-theme/theme/apple-tv.css
-https://dein-server/jellyfin-theme/fonts/inter-latin-wght-normal.woff2
-```
+### Option A: via jsDelivr (easiest)
 
 ```css
-@import url("https://dein-server/jellyfin-theme/theme/apple-tv.css");
+@import url("https://cdn.jsdelivr.net/gh/Lua-x/Jellyos-jellyfin-theme@1.1.2/theme/apple-tv.css");
 ```
 
-Die Schrift wird relativ zur CSS-Datei geladen. Bei einem anderen Host als
-Jellyfin muss der Webserver CORS für Schriften erlauben
+Always pin a release tag (`@1.1.2`) rather than `@main` – jsDelivr caches
+`@main` for a while, so changes arrive with a delay.
+
+### Option B: self-hosted (no third parties)
+
+Put the `theme/` **and** `fonts/` folders on your own web server (e.g. nginx
+in your homelab) and keep the folder structure:
+
+```
+https://your-server/jellyfin-theme/theme/apple-tv.css
+https://your-server/jellyfin-theme/fonts/inter-latin-wght-normal.woff2
+```
+
+```css
+@import url("https://your-server/jellyfin-theme/theme/apple-tv.css");
+```
+
+The font is loaded relative to the CSS file. If the server is on a different
+host than Jellyfin, it must allow CORS for fonts
 (`Access-Control-Allow-Origin`).
 
-## Anpassen
+## Customizing
 
-Alle Farben, Radien und Effekte stehen als Variablen am Anfang der Datei.
-Eigene Werte einfach **unter** dem `@import` im Jellyfin-Feld überschreiben:
+All colors, radii and effects are variables at the top of the file. Override
+them in the Jellyfin field **below** the `@import`:
 
 ```css
 @import url("…/apple-tv.css");
 
 :root {
-    --tv-ambient: none;        /* reines Schwarz statt Umgebungslicht */
-    --tv-tint: #30d158;        /* Akzentfarbe (z. B. Grün) */
-    --tv-focus-scale: 1.05;    /* dezenterer Zoom */
+    --tv-ambient: none;        /* pure black instead of ambient light */
+    --tv-tint: #30d158;        /* accent color (e.g. green) */
+    --tv-focus-scale: 1.05;    /* subtler zoom */
 }
 ```
 
-| Variable | Bedeutung |
+| Variable | Purpose |
 |---|---|
-| `--tv-bg` | Seitenhintergrund |
-| `--tv-ambient` | Umgebungslicht hinter den Seiten (`none` = aus) |
-| `--lg-filter`, `--lg-filter-panel` | Unschärfe des Glases (`none` = aus) |
-| `--lg-tint`, `--lg-tint-panel` | Tönung des Glases (höher = besser lesbar, weniger Glas) |
-| `--lg-rim`, `--lg-sheen` | Lichtkanten und Glanz |
-| `--tv-text`, `--tv-text-2` | Primär- / Sekundärtext |
-| `--tv-tint` | Akzent (Links, Checkboxen) |
-| `--tv-radius-card`, `--tv-radius-dialog` | Eckenradien |
-| `--tv-focus-scale` | Zoom bei Fokus/Hover |
+| `--tv-bg` | page background |
+| `--tv-ambient` | ambient light behind the pages (`none` = off) |
+| `--lg-filter`, `--lg-filter-panel` | glass blur (`none` = off) |
+| `--lg-tint`, `--lg-tint-panel` | glass tint (higher = more readable, less glass) |
+| `--lg-rim`, `--lg-sheen` | rim light and sheen |
+| `--tv-text`, `--tv-text-2` | primary / secondary text |
+| `--tv-tint` | accent (links, checkboxes) |
+| `--tv-radius-card`, `--tv-radius-dialog` | corner radii |
+| `--tv-radius-person` | corner radius of cast & crew portraits |
+| `--tv-focus-scale` | zoom on focus/hover |
 
-### Schwache Geräte
+### Low-end devices
 
-Unschärfe kostet Grafikleistung, vor allem über laufendem Video. Wenn es
-ruckelt:
+Blur costs GPU power, especially over playing video. If things stutter:
 
 ```css
 :root {
@@ -109,48 +110,55 @@ ruckelt:
 }
 ```
 
-## Empfohlene Jellyfin-Einstellungen
+## Recommended Jellyfin settings
 
-- **Einstellungen → Startseite:** bei „Weiterschauen“ und „Zuletzt
-  hinzugefügt“ Querformat-Bilder (Thumbs) verwenden
-- **Einstellungen → Anzeige:** Hintergründe (Backdrops) aktivieren – das
-  Glas wirkt am besten über Bildern
-- **Layout:** Automatisch, Desktop, Mobil oder TV. Das Layout
-  „Experimentell“ nutzt eine andere Oberfläche und wird nur teilweise erfasst.
+- **Settings → Home:** use landscape images (thumbs) for "Continue Watching"
+  and "Recently Added"
+- **Settings → Display:** enable backdrops – the glass looks best over images
+- **Layout:** Auto, Desktop, Mobile or TV. The "Experimental" layout uses a
+  different interface and is only partially covered.
 
-## Vorschau ohne Server
+## Troubleshooting
 
-Im Ordner `preview/` liegen drei Seiten, die Jellyfin mit denselben
-CSS-Klassen nachbauen: `index.html` (Bibliothek mit Reihen, Buttons, Menü),
-`detail.html` (Detailseite) und `player.html` (Videoplayer). Einfach im
-Browser öffnen. Das ersetzt keinen Test im echten Jellyfin.
+- **Theme doesn't apply:** open the CSS URL directly in the browser. A 404
+  means the tag in the link doesn't exist on GitHub (yet) – use an existing
+  tag or a commit hash instead (`@<commit-id>`).
+- **Changes don't show up:** reload with **Ctrl + F5**; with `@main` wait for
+  the jsDelivr cache or use a tag.
 
-## Aufbau
+## Preview without a server
+
+The `preview/` folder contains three pages that recreate Jellyfin with the
+same CSS classes: `index.html` (library with rows, buttons, menu),
+`detail.html` (detail page) and `player.html` (video player). Just open them
+in a browser. This does not replace testing in a real Jellyfin instance.
+
+## Structure
 
 ```
-theme/apple-tv.css     Das Theme (eine Datei, in Abschnitte gegliedert)
-fonts/                 Inter (variabel, latin) + Lizenz (SIL OFL 1.1)
-preview/               Vorschau-Seiten, Platzhalterbilder, Screenshots
-CLAUDE.md              Hinweise für die Weiterentwicklung mit Claude Code
+theme/apple-tv.css     The theme (one file, split into sections)
+fonts/                 Inter (variable, latin) + license (SIL OFL 1.1)
+preview/               Preview pages, placeholder images, screenshots
+CLAUDE.md              Notes for further development with Claude Code
 ```
 
-## Bekannte Grenzen
+## Known limitations
 
-- Wirkt nur in Clients, die den Web-Client nutzen (Browser, Jellyfin Media
-  Player, Android-/iOS-App). Native Apps wie die Android-TV-App oder Swiftfin
-  bringen ihre eigene Oberfläche mit.
-- Jellyfin ändert Klassennamen gelegentlich zwischen Versionen. Wenn nach
-  einem Update etwas nicht greift, mit den Entwicklertools (F12) die aktuelle
-  Klasse prüfen.
-- Echte Lichtbrechung und ein „Top Shelf“-Hero-Banner bräuchten JavaScript
-  (z. B. über ein Plugin) und sind nicht Teil dieses Themes.
-- Ältere Browser ohne `backdrop-filter` bekommen deckende statt gläserne
-  Flächen.
+- Only applies to clients that use the web client (browser, Jellyfin Media
+  Player, Android/iOS app). Native apps such as the Android TV app or
+  Swiftfin have their own interface.
+- Jellyfin occasionally renames classes between versions. If something
+  stops working after an update, check the current class with the developer
+  tools (F12).
+- Real refraction and a "Top Shelf" hero banner would need JavaScript (e.g.
+  via a plugin) and are not part of this theme.
+- Older browsers without `backdrop-filter` get opaque instead of glass
+  surfaces.
 
-## Lizenz
+## License
 
-Theme: MIT (siehe `LICENSE`).
-Schrift Inter: SIL Open Font License 1.1 (siehe `fonts/OFL.txt`).
-Icons in der Vorschau: Material Icons (Apache 2.0).
-Nicht mit Apple verbunden; „Apple TV“, „tvOS“ und „Liquid Glass“ sind Marken
-bzw. Bezeichnungen von Apple Inc.
+Theme: MIT (see `LICENSE`).
+Inter font: SIL Open Font License 1.1 (see `fonts/OFL.txt`).
+Icons in the preview: Material Icons (Apache 2.0).
+Not affiliated with Apple; "Apple TV", "tvOS" and "Liquid Glass" are
+trademarks or designations of Apple Inc.

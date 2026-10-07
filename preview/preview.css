@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Vorschau-Grundgerüst
-   Bildet nur das Layout nach, das Jellyfin selbst mitbringt (Positionen,
-   Größen). Das Aussehen kommt ausschließlich aus theme/apple-tv.css.
+   Preview scaffold
+   Only recreates the layout Jellyfin brings itself (positions, sizes).
+   The look comes exclusively from theme/apple-tv.css.
    ========================================================================== */
 
 * { box-sizing: border-box; }
@@ -24,12 +24,12 @@ body {
     inset: 0;
 }
 
-/* Seiten liegen wie in Jellyfin positioniert über dem Hintergrund */
+/* Pages are positioned above the background, like in Jellyfin */
 .page {
     position: relative;
 }
 
-/* ---------- Kopfzeile ---------- */
+/* ---------- Header ---------- */
 .skinHeader {
     position: fixed;
     top: 0;
@@ -79,7 +79,7 @@ body {
     white-space: nowrap;
 }
 
-/* ---------- Seiten & Reihen ---------- */
+/* ---------- Pages & rows ---------- */
 .page {
     padding: 8.4em 3.3% 6em;
 }
@@ -180,7 +180,7 @@ body {
     text-overflow: ellipsis;
 }
 
-/* ---------- Bedienelemente ---------- */
+/* ---------- Controls ---------- */
 .demoRow {
     display: flex;
     flex-wrap: wrap;
@@ -230,7 +230,7 @@ body {
     padding: 0.9em 1.6em;
 }
 
-/* ---------- Detailseite ---------- */
+/* ---------- Detail page ---------- */
 .page.itemDetailPage {
     padding: 0;
 }

@@ -1,15 +1,15 @@
 <!doctype html>
 <!--
-    Vorschau: Bibliothek „Filme“ mit Reihen, Bedienelementen und Dialog.
-    Ahmt Jellyfin mit denselben CSS-Klassen nach, damit das Theme ohne
-    Server getestet werden kann. Bilder sind Platzhalter aus assets/.
-    Weitere Seiten: detail.html, player.html
+    Preview: "Movies" library with rows, controls and a dialog.
+    Recreates Jellyfin with the same CSS classes so the theme can be
+    tested without a server. Images are placeholders from assets/.
+    More pages: detail.html, player.html
 -->
-<html lang="de" class="layout-desktop">
+<html lang="en" class="layout-desktop">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jellyos – Vorschau</title>
+    <title>Jellyos – Preview</title>
     <link rel="stylesheet" href="preview.css">
     <link rel="stylesheet" href="../theme/apple-tv.css">
 </head>
@@ -19,21 +19,21 @@
 <header class="skinHeader">
     <div class="headerTop">
         <div class="headerLeft">
-            <button class="headerButton mainDrawerButton" title="Menü"><span data-icon="menu"></span></button>
-            <h3 class="pageTitle">Filme</h3>
+            <button class="headerButton mainDrawerButton" title="Menu"><span data-icon="menu"></span></button>
+            <h3 class="pageTitle">Movies</h3>
         </div>
         <div class="headerRight">
-            <button class="headerButton headerCastButton" title="Wiedergabe auf"><span data-icon="cast"></span></button>
-            <button class="headerButton headerSearchButton" title="Suche"><span data-icon="search"></span></button>
-            <button class="headerButton headerUserButton" title="Benutzer"><span data-icon="person"></span></button>
+            <button class="headerButton headerCastButton" title="Play on"><span data-icon="cast"></span></button>
+            <button class="headerButton headerSearchButton" title="Search"><span data-icon="search"></span></button>
+            <button class="headerButton headerUserButton" title="User"><span data-icon="person"></span></button>
         </div>
     </div>
     <div class="headerTabs sectionTabs">
         <div class="emby-tabs-slider">
-            <button class="emby-tab-button">Filme</button>
-            <button class="emby-tab-button emby-tab-button-active">Vorschläge</button>
-            <button class="emby-tab-button">Favoriten</button>
-            <button class="emby-tab-button">Sammlungen</button>
+            <button class="emby-tab-button">Movies</button>
+            <button class="emby-tab-button emby-tab-button-active">Suggestions</button>
+            <button class="emby-tab-button">Favorites</button>
+            <button class="emby-tab-button">Collections</button>
             <button class="emby-tab-button">Genres</button>
         </div>
     </div>
@@ -42,53 +42,53 @@
 <main class="page libraryPage">
 
     <div class="verticalSection">
-        <h2 class="sectionTitle sectionTitle-cards">Weiterschauen</h2>
+        <h2 class="sectionTitle sectionTitle-cards">Continue Watching</h2>
         <div class="itemsContainer" id="rowResume"></div>
     </div>
 
     <div class="verticalSection">
-        <h2 class="sectionTitle sectionTitle-cards">Zuletzt hinzugefügt</h2>
+        <h2 class="sectionTitle sectionTitle-cards">Recently Added</h2>
         <div class="itemsContainer" id="rowLatest"></div>
     </div>
 
     <div class="verticalSection">
-        <h2 class="sectionTitle">Bedienelemente</h2>
+        <h2 class="sectionTitle">Controls</h2>
         <div class="demoRow">
-            <button class="emby-button raised button-submit">Speichern</button>
-            <button class="emby-button raised">Abbrechen</button>
-            <input class="emby-input" placeholder="Suchen …">
+            <button class="emby-button raised button-submit">Save</button>
+            <button class="emby-button raised">Cancel</button>
+            <input class="emby-input" placeholder="Search …">
         </div>
     </div>
 
     <div class="verticalSection">
-        <h2 class="sectionTitle">Aktionsmenü</h2>
+        <h2 class="sectionTitle">Action menu</h2>
         <div class="dialog actionSheet">
-            <span class="actionSheetMenuItem"><span data-icon="play_arrow"></span>Abspielen</span>
-            <span class="actionSheetMenuItem"><span data-icon="playlist_add"></span>Zur Playlist hinzufügen</span>
-            <span class="actionSheetMenuItem"><span data-icon="check"></span>Als gesehen markieren</span>
-            <span class="actionSheetMenuItem"><span data-icon="favorite_border"></span>Zu Favoriten</span>
+            <span class="actionSheetMenuItem"><span data-icon="play_arrow"></span>Play</span>
+            <span class="actionSheetMenuItem"><span data-icon="playlist_add"></span>Add to playlist</span>
+            <span class="actionSheetMenuItem"><span data-icon="check"></span>Mark as played</span>
+            <span class="actionSheetMenuItem"><span data-icon="favorite_border"></span>Add to favorites</span>
         </div>
     </div>
 </main>
 
-<div class="toast">Zur Playlist „Filmabend“ hinzugefügt</div>
+<div class="toast">Added to playlist "Movie Night"</div>
 
 <script src="preview.js"></script>
 <script>
-    reihe("rowResume", [
-        { titel: "Andor", info: "S2:E4", fortschritt: 62 },
-        { titel: "The Expanse", info: "S3:E1", fortschritt: 18 },
-        { titel: "Frieren", info: "Folge 12", fortschritt: 85 },
-        { titel: "Severance", info: "S2:E7", fortschritt: 40 },
-        { titel: "Dune: Part Two", info: "1 Std. 12 Min. übrig", fortschritt: 30 }
-    ].map((k, i) => ({ ...k, typ: "backdrop", index: i })));
+    row("rowResume", [
+        { title: "Andor", info: "S2:E4", progress: 62 },
+        { title: "The Expanse", info: "S3:E1", progress: 18 },
+        { title: "Frieren", info: "Episode 12", progress: 85 },
+        { title: "Severance", info: "S2:E7", progress: 40 },
+        { title: "Dune: Part Two", info: "1 hr 12 min left", progress: 30 }
+    ].map((c, i) => ({ ...c, type: "backdrop", index: i })));
 
-    reihe("rowLatest", [
+    row("rowLatest", [
         "Blade Runner 2049", "Interstellar", "Arrival", "The Batman",
         "Oppenheimer", "Top Gun: Maverick", "Mad Max: Fury Road", "Rogue One"
-    ].map((titel, i) => ({ titel, info: String(2014 + i), index: i, gesehen: i % 3 === 1 })));
+    ].map((title, i) => ({ title, info: String(2014 + i), index: i, played: i % 3 === 1 })));
 
-    iconsEinsetzen();
+    insertIcons();
 </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
-// Gemeinsame Helfer für die Vorschau-Seiten (Icons und Karten)
+// Shared helpers for the preview pages (icons and cards)
 
-// Material-Icons (Apache-2.0), dieselben wie in Jellyfin
+// Material Icons (Apache-2.0), the same ones Jellyfin uses
 const ICONS = {
     arrow_back: "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z",
     menu: "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z",
@@ -24,82 +24,82 @@ function icon(name) {
     return `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name]}"/></svg>`;
 }
 
-// Platzhalter <span data-icon="..."> durch SVG ersetzen
-function iconsEinsetzen() {
+// Replace placeholders <span data-icon="..."> with SVGs
+function insertIcons() {
     document.querySelectorAll("[data-icon]").forEach(el => {
         el.outerHTML = icon(el.dataset.icon);
     });
 }
 
-// Farbverläufe als Poster-Ersatz
-const POSTER = [
+// Color gradients as poster placeholders
+const POSTERS = [
     ["#1d3b6b", "#e2725b", "#ffd6a0"], ["#0f5132", "#9bd18b", "#e6ffd1"],
     ["#3a1c71", "#d76d77", "#ffd1dc"], ["#232526", "#c9a227", "#fff1b8"],
     ["#134e5e", "#71b280", "#d6fff0"], ["#41295a", "#8e44ad", "#f3d1ff"],
     ["#0b486b", "#f56217", "#ffe0c2"], ["#cb356b", "#3a1c71", "#ffd0e4"]
 ];
 
-function posterBild(i) {
-    const [a, b, c] = POSTER[i % POSTER.length];
+function posterImage(i) {
+    const [a, b, c] = POSTERS[i % POSTERS.length];
     return `radial-gradient(circle at 70% 28%, ${c}aa, transparent 38%),
             linear-gradient(160deg, ${a}, ${b})`;
 }
 
-// Querformat-Bilder: die beiden Szenen, farblich variiert
-function thumbBild(i) {
-    const datei = i % 2 === 0 ? "assets/berge.svg" : "assets/weltraum.svg";
-    return { bild: `url(${datei})`, filter: `hue-rotate(${(i * 47) % 360}deg)` };
+// Landscape images: the two scenes, with varied colors
+function thumbImage(i) {
+    const file = i % 2 === 0 ? "assets/mountains.svg" : "assets/space.svg";
+    return { image: `url(${file})`, filter: `hue-rotate(${(i * 47) % 360}deg)` };
 }
 
 /**
- * Erzeugt eine Karte mit denselben Klassen wie Jellyfin.
- * typ: "backdrop" | "portrait" | "square"
+ * Builds a card with the same classes as Jellyfin.
+ * type: "backdrop" | "portrait" | "square"
  */
-function karte({ titel, info = "", typ = "portrait", index = 0, fortschritt = 0, gesehen = false }) {
-    const kartenTyp = {
+function card({ title, info = "", type = "portrait", index = 0, progress = 0, played = false }) {
+    const cardType = {
         backdrop: "overflowBackdropCard",
         portrait: "overflowPortraitCard",
         square: "overflowSquareCard"
-    }[typ];
+    }[type];
 
-    let stil = `background:${posterBild(index)}`;
-    if (typ === "backdrop") {
-        const t = thumbBild(index);
-        stil = `background-image:${t.bild};filter:${t.filter}`;
+    let style = `background:${posterImage(index)}`;
+    if (type === "backdrop") {
+        const t = thumbImage(index);
+        style = `background-image:${t.image};filter:${t.filter}`;
     }
 
-    const balken = fortschritt
+    const progressBar = progress
         ? `<div class="innerCardFooter"><div class="itemProgressBar">
-               <div class="itemProgressBarForeground" style="width:${fortschritt}%"></div>
+               <div class="itemProgressBarForeground" style="width:${progress}%"></div>
            </div></div>`
         : "";
 
-    const haken = gesehen
+    const playedMark = played
         ? `<div class="playedIndicator">${icon("check")}</div>`
         : "";
 
-    const overlay = typ === "square" ? "" : `
+    const overlay = type === "square" ? "" : `
         <div class="cardOverlayContainer">
-            <button class="cardOverlayButton" title="Abspielen">${icon("play_arrow")}</button>
-            <button class="cardOverlayButton" title="Mehr">${icon("more_horiz")}</button>
+            <button class="cardOverlayButton" title="Play">${icon("play_arrow")}</button>
+            <button class="cardOverlayButton" title="More">${icon("more_horiz")}</button>
         </div>`;
 
     return `
-    <div class="card ${kartenTyp}" tabindex="0">
+    <div class="card ${cardType}" tabindex="0">
         <div class="cardBox cardBox-bottompadded">
             <div class="cardScalable">
-                <div class="cardPadder cardPadder-${typ}"></div>
-                <div class="cardImageContainer" style="${stil}"></div>
-                ${haken}${balken}${overlay}
+                <div class="cardPadder cardPadder-${type}"></div>
+                <div class="cardImageContainer" style="${style}"></div>
+                ${playedMark}${progressBar}${overlay}
             </div>
             <div class="cardFooter">
-                <div class="cardText cardText-first">${titel}</div>
+                <div class="cardText cardText-first">${title}</div>
                 ${info ? `<div class="cardText">${info}</div>` : ""}
             </div>
         </div>
     </div>`;
 }
 
-function reihe(id, karten) {
-    document.getElementById(id).innerHTML = karten.map(karte).join("");
+function row(id, cards) {
+    document.getElementById(id).innerHTML = cards.map(card).join("");
 }

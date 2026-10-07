@@ -1,29 +1,29 @@
 /* ==========================================================================
-   Jellyos – Apple-TV-Look mit Liquid Glass für Jellyfin
-   Version: 1.1.1
+   Jellyos – Apple TV look with Liquid Glass for Jellyfin
+   Version: 1.1.2
    Repo:    https://github.com/Lua-x/Jellyos-jellyfin-theme
-   Ziel:    Jellyfin 10.9+ (Web-Client, Standard-Layout)
-   Lizenz:  MIT
+   Target:  Jellyfin 10.9+ (web client, standard layout)
+   License: MIT
 
-   Einbinden: Dashboard → Allgemein → „Benutzerdefinierter CSS-Code“
-              @import url("<URL zu dieser Datei>");
+   Usage: Dashboard → General → "Custom CSS code"
+          @import url("<URL of this file>");
 
-   Abschnitte:
-     1. Schrift                    9. Detailseite
-     2. Variablen                 10. Buttons
-     3. Liquid-Glass-Material     11. Formulare
-     4. Grundlayout               12. Dialoge, Menüs, Toasts
-     5. Kopfzeile & Tabs          13. Listen
-     6. Seitenmenü                14. Player & Musikleiste
-     7. Abschnitte & Reihen       15. Layouts & Barrierefreiheit
-     8. Karten
+   Sections:
+     1. Font                       9. Detail page
+     2. Variables                 10. Buttons
+     3. Liquid Glass material     11. Forms
+     4. Base layout               12. Dialogs, menus, toasts
+     5. Header & tabs             13. Lists
+     6. Side menu                 14. Player & music bar
+     7. Sections & rows           15. Layouts & accessibility
+     8. Cards
    ========================================================================== */
 
 
 /* --------------------------------------------------------------------------
-   1. Schrift
-   Inter liegt im Repo (fonts/) und wird relativ zu dieser Datei geladen –
-   kein Google Fonts. Auf Apple-Geräten wird automatisch SF Pro verwendet.
+   1. Font
+   Inter ships with the repo (fonts/) and is loaded relative to this file –
+   no Google Fonts. Apple devices automatically use SF Pro.
    -------------------------------------------------------------------------- */
 @font-face {
     font-family: "InterTV";
@@ -35,92 +35,93 @@
 
 
 /* --------------------------------------------------------------------------
-   2. Variablen – hier lässt sich das Theme anpassen
+   2. Variables – customize the theme here
    -------------------------------------------------------------------------- */
 :root {
-    /* Grundfarben */
-    --tv-bg: #000000;                          /* Seitenhintergrund */
-    --tv-surface: #1c1c1e;                     /* Karten-Platzhalter, Listen */
-    --tv-fill: rgba(118, 118, 128, 0.22);      /* Eingabefelder, Buttons */
+    /* Base colors */
+    --tv-bg: #000000;                          /* Page background */
+    --tv-surface: #1c1c1e;                     /* Card placeholders, lists */
+    --tv-fill: rgba(118, 118, 128, 0.22);      /* Input fields, buttons */
     --tv-fill-hover: rgba(118, 118, 128, 0.34);
-    --tv-text: #f5f5f7;                        /* Primärtext */
-    --tv-text-2: rgba(235, 235, 245, 0.64);    /* Sekundärtext */
-    --tv-text-3: rgba(235, 235, 245, 0.34);    /* Tertiärtext */
-    --tv-primary: #ffffff;                     /* Primär-Button */
+    --tv-text: #f5f5f7;                        /* Primary text */
+    --tv-text-2: rgba(235, 235, 245, 0.64);    /* Secondary text */
+    --tv-text-3: rgba(235, 235, 245, 0.34);    /* Tertiary text */
+    --tv-primary: #ffffff;                     /* Primary button */
     --tv-on-primary: #000000;
-    --tv-tint: #0a84ff;                        /* Akzent (Apple systemBlue) */
+    --tv-tint: #0a84ff;                        /* Accent (Apple systemBlue) */
 
-    /* Umgebungslicht hinter den Seiten – gibt dem Glas etwas zum Zeigen.
-       „none“ = reines Schwarz wie beim klassischen Apple TV */
+    /* Ambient light behind the pages – gives the glass something to show.
+       "none" = pure black like the classic Apple TV */
     --tv-ambient:
         radial-gradient(70vw 50vh at 12% -8%, rgba(70, 110, 255, 0.20), transparent 70%),
         radial-gradient(60vw 45vh at 92% -12%, rgba(255, 70, 160, 0.13), transparent 70%);
 
-    /* Formen */
+    /* Shapes */
     --tv-radius-card: 16px;
+    --tv-radius-person: 8px;                   /* cast & crew portraits */
     --tv-radius-control: 14px;
     --tv-radius-dialog: 28px;
     --tv-radius-pill: 999px;
 
-    /* Karten */
+    /* Cards */
     --tv-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
     --tv-shadow-focus: 0 28px 60px rgba(0, 0, 0, 0.75);
     --tv-focus-scale: 1.08;
 
-    /* Bewegung */
+    /* Motion */
     --tv-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-    --tv-spring: cubic-bezier(0.34, 1.56, 0.64, 1);   /* federnd, s. Abschnitt 15 */
+    --tv-spring: cubic-bezier(0.34, 1.56, 0.64, 1);   /* springy, see section 15 */
     --tv-duration: 0.35s;
 
-    /* Liquid Glass – Unschärfe und Farbverstärkung des Hintergrunds.
-       „none“ schaltet die Unschärfe ab (spart Leistung auf schwachen Geräten) */
+    /* Liquid Glass – blur and color boost of the background.
+       "none" turns off the blur (saves performance on weak devices) */
     --lg-filter: blur(16px) saturate(190%) brightness(1.08);
     --lg-filter-panel: blur(28px) saturate(180%);
 
-    /* Liquid Glass – Tönung, hält Text auf hellen Inhalten lesbar */
-    --lg-tint: rgba(30, 30, 34, 0.30);         /* kleine Elemente */
-    --lg-tint-panel: rgba(26, 26, 30, 0.60);   /* Panels mit viel Text */
+    /* Liquid Glass – tint, keeps text readable on bright content */
+    --lg-tint: rgba(30, 30, 34, 0.30);         /* small elements */
+    --lg-tint-panel: rgba(26, 26, 30, 0.60);   /* panels with a lot of text */
 
-    /* Liquid Glass – Glanz: Lichtfang oben links, Reflex an der Unterkante */
+    /* Liquid Glass – sheen: highlight top left, reflection at the bottom edge */
     --lg-sheen:
         radial-gradient(120% 90% at 25% 0%, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0) 55%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.05));
 
-    /* Liquid Glass – Lichtkanten: hell oben links, schwächer unten rechts */
+    /* Liquid Glass – rim light: bright top left, weaker bottom right */
     --lg-rim:
         inset 1px 1px 0 rgba(255, 255, 255, 0.42),
         inset -1px -1px 0 rgba(255, 255, 255, 0.16),
         inset 0 0 0 1px rgba(255, 255, 255, 0.07),
         inset 0 0 16px rgba(255, 255, 255, 0.05);
 
-    /* Liquid Glass – hervorgehobenes Glas (aktiver Tab, Menü-Auswahl) */
+    /* Liquid Glass – highlighted glass (active tab, menu selection) */
     --lg-bubble: linear-gradient(180deg, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.12));
     --lg-bubble-rim:
         inset 1px 1px 0 rgba(255, 255, 255, 0.55),
         inset -1px -1px 0 rgba(255, 255, 255, 0.16);
 
-    /* Liquid Glass – Schwebe-Schatten */
+    /* Liquid Glass – floating shadow */
     --lg-shadow: 0 8px 28px rgba(0, 0, 0, 0.32), 0 1px 4px rgba(0, 0, 0, 0.2);
     --lg-shadow-panel: 0 30px 80px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.25);
 
-    /* Schrift */
+    /* Font */
     --tv-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "InterTV",
                "Segoe UI", system-ui, sans-serif;
 }
 
 
 /* --------------------------------------------------------------------------
-   3. Liquid-Glass-Material
-   Vier Schichten: Unschärfe + Farbverstärkung des Hintergrunds, Tönung,
-   Glanz und Lichtkanten. Echte Lichtbrechung an den Rändern ist mit reinem
-   CSS nicht browserübergreifend möglich.
+   3. Liquid Glass material
+   Four layers: blur + color boost of the background, tint, sheen and rim
+   light. Real refraction at the edges is not possible cross-browser with
+   pure CSS.
 
-   WICHTIG: Eltern-Elemente von Glas dürfen kein filter, opacity < 1, mask
-   oder backdrop-filter haben – sonst „sieht“ das Glas nur noch das
-   Eltern-Element statt der Seite dahinter (siehe Kopfzeile, Abschnitt 5).
+   IMPORTANT: Ancestors of glass must not have filter, opacity < 1, mask or
+   backdrop-filter – otherwise the glass only "sees" that ancestor instead
+   of the page behind it (see header, section 5).
    -------------------------------------------------------------------------- */
 
-/* Glas – kleine, schwebende Bedienelemente */
+/* Glass – small floating controls */
 .headerTabs .emby-tabs-slider,
 .headerButton,
 .emby-scrollbuttons-button,
@@ -133,7 +134,7 @@
     box-shadow: var(--lg-rim), var(--lg-shadow) !important;
 }
 
-/* Glas-Panels – größere Flächen mit viel Text */
+/* Glass panels – larger surfaces with a lot of text */
 .mainDrawer,
 .dialog:not(.dialog-fullscreen),
 .upNextDialog,
@@ -149,21 +150,21 @@
 
 
 /* --------------------------------------------------------------------------
-   4. Grundlayout
+   4. Base layout
    -------------------------------------------------------------------------- */
-/* Bewusst nicht auf body: ein body-Hintergrund würde Jellyfins
-   Backdrop-Ebene (z-index < 0) verdecken */
+/* Deliberately not on body: a body background would cover
+   Jellyfin's backdrop layer (z-index < 0) */
 html,
 .backgroundContainer {
     background-color: var(--tv-bg) !important;
 }
 
-/* Umgebungslicht (nur wenn kein Backdrop-Bild angezeigt wird) */
+/* Ambient light (only when no backdrop image is shown) */
 .backgroundContainer:not(.withBackdrop) {
     background-image: var(--tv-ambient) !important;
 }
 
-/* Halbtransparenter Hintergrund, wenn Backdrops aktiviert sind */
+/* Semi-transparent background when backdrops are enabled */
 .backgroundContainer.withBackdrop {
     background-color: rgba(0, 0, 0, 0.78) !important;
 }
@@ -199,7 +200,7 @@ a,
     background: rgba(10, 132, 255, 0.45);
 }
 
-/* Schlanke Scrollbars */
+/* Slim scrollbars */
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
@@ -221,11 +222,11 @@ a,
 
 
 /* --------------------------------------------------------------------------
-   5. Kopfzeile & Tab-Leiste
+   5. Header & tab bar
    -------------------------------------------------------------------------- */
 
-/* Jellyfins eigenen Hintergrund und Blur der Kopfzeile entfernen.
-   Ein backdrop-filter hier würde das Glas der Tab-Leiste kaputt machen. */
+/* Remove Jellyfin's own header background and blur.
+   A backdrop-filter here would break the glass of the tab bar. */
 .skinHeader,
 .skinHeader-blurred,
 .skinHeader-withBackground,
@@ -237,7 +238,7 @@ a,
     border: none !important;
 }
 
-/* Scroll-Kante: Inhalte verschwimmen weich unter der Kopfzeile (wie iOS 26) */
+/* Scroll edge: content blurs softly under the header (like iOS 26) */
 .skinHeader::before {
     content: "";
     position: absolute;
@@ -260,7 +261,7 @@ a,
     text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45);
 }
 
-/* Header-Buttons als Glas-Kreise */
+/* Header buttons as glass circles */
 .headerButton {
     border-radius: 50% !important;
     margin-inline: 0.15em;
@@ -279,7 +280,7 @@ a,
     transition-duration: 0.12s;
 }
 
-/* Tab-Leiste: zentrierte, schwebende Glas-Kapsel */
+/* Tab bar: centered, floating glass capsule */
 .headerTabs {
     display: flex;
     justify-content: center;
@@ -318,7 +319,7 @@ a,
     transition-duration: 0.12s;
 }
 
-/* Aktiver Tab: helle Glas-Blase */
+/* Active tab: bright glass bubble */
 .emby-tab-button-active,
 .emby-tab-button-active:hover {
     background: var(--lg-bubble) !important;
@@ -326,7 +327,7 @@ a,
     box-shadow: var(--lg-bubble-rim), 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* Tastatur-/Fernbedienungsfokus: weiß wie bei tvOS */
+/* Keyboard/remote focus: white like tvOS */
 .emby-tab-button.emby-button-focus,
 .emby-tab-button:focus-visible {
     background: #ffffff !important;
@@ -335,7 +336,7 @@ a,
     outline: none;
 }
 
-/* Unterstrich-Indikator von Jellyfin ausblenden */
+/* Hide Jellyfin's underline indicator */
 .emby-tab-button::after,
 .emby-tab-button-active::after {
     display: none !important;
@@ -343,11 +344,11 @@ a,
 
 
 /* --------------------------------------------------------------------------
-   6. Seitenmenü (Drawer)
+   6. Side menu (drawer)
    -------------------------------------------------------------------------- */
 
-/* Nur Lichtkante rechts, kein Außenschatten (würde im geschlossenen
-   Zustand am linken Rand hervorblitzen) */
+/* Only a rim light on the right, no outer shadow (it would peek out at
+   the left edge while closed) */
 .mainDrawer {
     box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.16) !important;
 }
@@ -367,7 +368,7 @@ a,
     transition-duration: 0.12s;
 }
 
-/* Auswahl: helle Glas-Blase */
+/* Selection: bright glass bubble */
 .navMenuOption-selected,
 .navMenuOption-selected:hover {
     background: var(--lg-bubble) !important;
@@ -387,7 +388,7 @@ a,
 
 
 /* --------------------------------------------------------------------------
-   7. Abschnittstitel & Reihen
+   7. Section titles & rows
    -------------------------------------------------------------------------- */
 .sectionTitle,
 .sectionTitle-cards {
@@ -405,15 +406,15 @@ a,
     margin-bottom: 1.2em;
 }
 
-/* Scroll-Pfeile als Glas-Kreise */
+/* Scroll arrows as glass circles */
 .emby-scrollbuttons-button {
     border-radius: 50% !important;
 }
 
 
 /* --------------------------------------------------------------------------
-   8. Karten (Poster, Thumbs, Episoden)
-   Fokus: anheben, vergrößern, Glaskante + Lichtstreif – wie auf dem Apple TV
+   8. Cards (posters, thumbs, episodes)
+   Focus: lift, scale up, glass edge + light sweep – like on Apple TV
    -------------------------------------------------------------------------- */
 .cardBox {
     transition: transform var(--tv-duration) var(--tv-ease);
@@ -430,15 +431,15 @@ a,
 
 .cardScalable {
     overflow: hidden;
-    isolation: isolate;             /* hält die z-index-Ebenen in der Karte */
+    isolation: isolate;             /* keeps the z-index layers inside the card */
     background-color: var(--tv-surface);
     box-shadow: var(--tv-shadow);
     transition: transform var(--tv-duration) var(--tv-ease),
                 box-shadow var(--tv-duration) var(--tv-ease);
 }
 
-/* Glasschicht über dem Bild: Lichtstreif, Glanz oben links, Lichtkanten.
-   Wird erst bei Fokus/Hover sichtbar. */
+/* Glass layer over the image: light sweep, sheen top left, rim light.
+   Only visible on focus/hover. */
 .cardScalable::after {
     content: "";
     position: absolute;
@@ -475,16 +476,16 @@ a,
 .card:focus .cardScalable::after,
 .card:focus-within .cardScalable::after {
     opacity: 1;
-    animation: tv-lichtstreif 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.08s both;
+    animation: tv-light-sweep 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.08s both;
 }
 
-/* Lichtstreif wandert einmal diagonal über die Karte */
-@keyframes tv-lichtstreif {
+/* Light sweep moves once diagonally across the card */
+@keyframes tv-light-sweep {
     from { background-position: -200% 0, 0 0; }
     to   { background-position: 300% 0, 0 0; }
 }
 
-/* Jellyfins eigene Fokus-Vergrößerung und Rahmen (TV-Layout) neutralisieren */
+/* Neutralize Jellyfin's own focus scaling and border (TV layout) */
 .card:focus .cardBox.cardBox-focustransform {
     transform: none !important;
 }
@@ -498,9 +499,9 @@ a,
     outline: none;
 }
 
-/* Hover-Overlay (Jellyfin: .cardOverlayContainer mit Play-Button in der
-   Mitte und Buttons unten rechts). Alle Größen in em – skaliert mit der
-   Schriftgröße und damit mit jeder Auflösung. */
+/* Hover overlay (Jellyfin: .cardOverlayContainer with a play button in the
+   center and buttons at the bottom right). All sizes in em – they scale
+   with the font size and therefore with every resolution. */
 .cardOverlayContainer {
     background: linear-gradient(to top,
                 rgba(0, 0, 0, 0.5) 0%,
@@ -512,7 +513,7 @@ a,
     color: #ffffff !important;
 }
 
-/* Play in der Mitte: weiße Kapsel, unabhängig von der Posterfarbe */
+/* Play in the center: white capsule, independent of the poster color */
 .cardOverlayContainer > .cardOverlayFab-primary {
     width: 2.6em !important;
     height: 2.6em !important;
@@ -535,7 +536,7 @@ a,
     font-size: 1.4em !important;
 }
 
-/* Buttons unten rechts: kompakte Glas-Kreise mit Abstand zum Rand */
+/* Buttons at the bottom right: compact glass circles with spacing from the edge */
 .cardOverlayButton-br {
     bottom: 0.5em !important;
     inset-inline-end: 0.5em !important;
@@ -558,7 +559,7 @@ a,
     font-size: 1.15em !important;
 }
 
-/* Text unter den Karten */
+/* Text below the cards */
 .cardText {
     color: var(--tv-text-2);
     font-size: 0.85em;
@@ -570,14 +571,14 @@ a,
     font-weight: 600;
 }
 
-/* Über den Fokus-Schatten legen, sonst wird der Titel abgedunkelt */
+/* Place above the focus shadow, otherwise the title gets darkened */
 .cardFooter {
     position: relative;
     z-index: 1;
     padding-top: 0.6em;
 }
 
-/* Fortschrittsbalken */
+/* Progress bar */
 .itemProgressBar {
     height: 4px !important;
     margin: 0 10px 9px;
@@ -591,7 +592,7 @@ a,
     border-radius: var(--tv-radius-pill);
 }
 
-/* „Gesehen“-Haken und Zähler (bewusst ohne Blur – sind sehr viele) */
+/* "Played" check mark and counter (deliberately without blur – there are many) */
 .playedIndicator,
 .countIndicator {
     background: rgba(255, 255, 255, 0.92) !important;
@@ -604,15 +605,15 @@ a,
     color: #000000 !important;
 }
 
-/* Kartenhintergrund ohne Bild (Platzhalter) */
+/* Card background without an image (placeholder) */
 .defaultCardBackground {
     background: linear-gradient(160deg, #2c2c2e, #1c1c1e) !important;
 }
 
 
 /* --------------------------------------------------------------------------
-   9. Detailseite (Film / Serie)
-   Großes Backdrop mit weichem Verlauf, Glas-Buttons direkt auf dem Bild
+   9. Detail page (movie / series)
+   Large backdrop with a soft fade, glass buttons right on the image
    -------------------------------------------------------------------------- */
 .layout-desktop .itemBackdrop,
 .layout-tv .itemBackdrop {
@@ -624,7 +625,7 @@ a,
     mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
 }
 
-/* Dunkle Bänder entfernen, Text steht direkt auf dem Bild */
+/* Remove dark bands, text sits directly on the image */
 .detailRibbon,
 .detailPagePrimaryContainer,
 .detailPageSecondaryContainer {
@@ -649,7 +650,7 @@ a,
     line-height: 1.5;
 }
 
-/* Runde Glas-Buttons */
+/* Round glass buttons */
 .mainDetailButtons .detailButton {
     border-radius: var(--tv-radius-pill) !important;
     color: #ffffff !important;
@@ -668,7 +669,7 @@ a,
     transition-duration: 0.12s;
 }
 
-/* Abspielen/Fortsetzen: milchig-weißes Glas */
+/* Play/resume: milky white glass */
 .mainDetailButtons .detailButton.btnPlay,
 .mainDetailButtons .detailButton.btnResume,
 .mainDetailButtons .detailButton.btnReplay {
@@ -697,18 +698,20 @@ a,
     color: var(--tv-on-primary) !important;
 }
 
-/* Genre-/Studio-Links */
+/* Genre/studio links */
 .itemDetailsGroup .textValue a,
 .itemGenres a {
     color: var(--tv-text);
 }
 
-/* Besetzung: runde Porträts, Namen zentriert */
+/* Cast: portraits with only slightly rounded corners, centered names */
 #castContent .cardScalable,
 #castContent .cardImageContainer,
+#castContent .cardOverlayContainer,
 .peopleSection .cardScalable,
-.peopleSection .cardImageContainer {
-    border-radius: 50% !important;
+.peopleSection .cardImageContainer,
+.peopleSection .cardOverlayContainer {
+    border-radius: var(--tv-radius-person) !important;
 }
 
 #castContent .cardFooter,
@@ -723,7 +726,7 @@ a,
    10. Buttons
    -------------------------------------------------------------------------- */
 
-/* Sekundär: Glas-Kapsel */
+/* Secondary: glass capsule */
 .emby-button.raised {
     background: var(--lg-sheen), var(--tv-fill) !important;
     color: var(--tv-text) !important;
@@ -738,7 +741,7 @@ a,
     background: var(--lg-sheen), var(--tv-fill-hover) !important;
 }
 
-/* Primär: weiße Kapsel */
+/* Primary: white capsule */
 .emby-button.button-submit,
 .emby-button.raised.button-submit {
     background: linear-gradient(180deg, #ffffff, #e9e9ee) !important;
@@ -761,7 +764,7 @@ a,
     border-radius: var(--tv-radius-control);
 }
 
-/* Federndes Drücken („flüssiges“ Nachgeben) */
+/* Springy press ("liquid" give) */
 .emby-button.raised,
 .emby-button.button-submit,
 .cardOverlayButton,
@@ -785,7 +788,7 @@ a,
 
 
 /* --------------------------------------------------------------------------
-   11. Formulare
+   11. Forms
    -------------------------------------------------------------------------- */
 .emby-input,
 .emby-textarea,
@@ -810,7 +813,7 @@ a,
         0 0 0 2px rgba(255, 255, 255, 0.55);
 }
 
-/* Suchfeld als Kapsel */
+/* Search field as a capsule */
 .searchfields-txtSearch {
     border-radius: var(--tv-radius-pill) !important;
     padding-left: 1.2em !important;
@@ -829,7 +832,7 @@ a,
     color: var(--tv-text) !important;
 }
 
-/* Checkboxen */
+/* Checkboxes */
 .emby-checkbox:checked + span + .checkboxOutline {
     background-color: var(--tv-tint) !important;
     border-color: var(--tv-tint) !important;
@@ -841,7 +844,7 @@ a,
 
 
 /* --------------------------------------------------------------------------
-   12. Dialoge, Aktionsmenüs, Toasts
+   12. Dialogs, action menus, toasts
    -------------------------------------------------------------------------- */
 .dialog:not(.dialog-fullscreen) {
     border-radius: var(--tv-radius-dialog) !important;
@@ -851,7 +854,7 @@ a,
     background: var(--tv-bg) !important;
 }
 
-/* Kopf-/Fußzeile im Dialog: leichtes Glas, falls Inhalt darunter scrollt */
+/* Dialog header/footer: light glass in case content scrolls underneath */
 .formDialogHeader,
 .formDialogFooter {
     background: rgba(30, 30, 34, 0.45) !important;
@@ -882,7 +885,7 @@ a,
 
 
 /* --------------------------------------------------------------------------
-   13. Listen (Einstellungen, Episodenlisten)
+   13. Lists (settings, episode lists)
    -------------------------------------------------------------------------- */
 .listItem {
     border-radius: var(--tv-radius-control);
@@ -907,14 +910,14 @@ a,
 
 
 /* --------------------------------------------------------------------------
-   14. Player (OSD) & Musikleiste
+   14. Player (OSD) & music bar
    -------------------------------------------------------------------------- */
 .skinHeader.osdHeader {
     background: linear-gradient(to bottom,
                 rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0)) !important;
 }
 
-/* Keine Unschärfe über dem laufenden Video */
+/* No blur over the playing video */
 .skinHeader.osdHeader::before {
     display: none;
 }
@@ -925,7 +928,7 @@ a,
                 rgba(0, 0, 0, 0) 100%) !important;
 }
 
-/* Steuerung als schwebende Glas-Fläche */
+/* Controls as a floating glass surface */
 .videoOsdBottom .osdControls {
     margin: 0 2% 1em;
     padding: 0.6em 1.4em 0.5em;
@@ -956,7 +959,7 @@ a,
     transition-duration: 0.12s;
 }
 
-/* Fortschritts- und Lautstärkeregler: weiß wie bei tvOS */
+/* Progress and volume sliders: white like tvOS */
 .mdl-slider-background-lower {
     background-color: #ffffff !important;
 }
@@ -983,18 +986,18 @@ a,
     border-radius: var(--tv-radius-dialog) !important;
 }
 
-/* Musikleiste unten: Glas mit Lichtkante oben, ohne Außenschatten
-   (sie wird zum Ausblenden nach unten geschoben) */
+/* Music bar at the bottom: glass with a rim light on top, no outer shadow
+   (it is pushed down to hide) */
 .nowPlayingBar {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
 }
 
 
 /* --------------------------------------------------------------------------
-   15. Layouts & Barrierefreiheit
+   15. Layouts & accessibility
    -------------------------------------------------------------------------- */
 
-/* Federkurve mit Nachschwingen – nur in Browsern, die linear() kennen */
+/* Spring curve with overshoot – only in browsers that support linear() */
 @supports (transition-timing-function: linear(0, 1)) {
     :root {
         --tv-spring: linear(0, 0.066, 0.22, 0.411, 0.602, 0.769, 0.902, 0.997,
@@ -1004,7 +1007,7 @@ a,
     }
 }
 
-/* Touch-Geräte: kein Hover-Zoom, kein Lichtstreif */
+/* Touch devices: no hover zoom, no light sweep */
 @media (hover: none) {
     .card:hover .cardScalable {
         transform: none;
@@ -1017,7 +1020,7 @@ a,
     }
 }
 
-/* Mobil: kleinere Radien, Tab-Leiste darf scrollen */
+/* Mobile: smaller radii, tab bar may scroll */
 .layout-mobile {
     --tv-radius-card: 12px;
 }
@@ -1032,12 +1035,12 @@ a,
     display: none;
 }
 
-/* Fernseher (TV-Layout): stärkerer Fokus-Effekt */
+/* TV (TV layout): stronger focus effect */
 .layout-tv {
     --tv-focus-scale: 1.12;
 }
 
-/* Reduzierte Bewegung respektieren */
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .cardBox,
     .cardScalable,
@@ -1063,7 +1066,7 @@ a,
     }
 }
 
-/* Reduzierte Transparenz (Bedienungshilfen): deckende Flächen */
+/* Reduced transparency (accessibility): opaque surfaces */
 @media (prefers-reduced-transparency: reduce) {
     :root {
         --lg-filter: none;
@@ -1073,7 +1076,7 @@ a,
     }
 }
 
-/* Fallback ohne backdrop-filter: deckendere Flächen */
+/* Fallback without backdrop-filter: more opaque surfaces */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     :root {
         --lg-tint: rgba(44, 44, 48, 0.92);
