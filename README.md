@@ -45,10 +45,10 @@ following options, save and reload the page with **Ctrl + F5**.
 ### Option A: via jsDelivr (easiest)
 
 ```css
-@import url("https://cdn.jsdelivr.net/gh/Lua-x/Jellyos-jellyfin-theme@1.1.2/theme/apple-tv.css");
+@import url("https://cdn.jsdelivr.net/gh/Lua-x/Jellyos-jellyfin-theme@1.1.3/theme/apple-tv.css");
 ```
 
-Always pin a release tag (`@1.1.2`) rather than `@main` – jsDelivr caches
+Always pin a release tag (`@1.1.3`) rather than `@main` – jsDelivr caches
 `@main` for a while, so changes arrive with a delay.
 
 ### Option B: self-hosted (no third parties)

@@ -83,7 +83,7 @@ https://github.com/jellyfin/jellyfin-web (cards: `src/components/cardbuilder/`).
 
 ## Versioning
 
-Semantic Versioning via Git tags (`v1.1.2`). Also update the version in the
+Semantic Versioning via Git tags (`v1.1.3`). Also update the version in the
 header comment of `theme/apple-tv.css` and in the jsDelivr link in the
 README. jsDelivr only serves a version once its tag exists on GitHub.
 
